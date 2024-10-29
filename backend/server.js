@@ -370,6 +370,10 @@ app.get('/', (req, res) => {
   res.send(`Server is running on port ${PORT}`);
 });
 
+app.get('/check', (req, res) => {
+  res.send(`Server Running`);
+});
+
 // Start Server
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
