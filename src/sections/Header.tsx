@@ -5,7 +5,6 @@ import Logo from "@/assets/logo-w.png";
 import { auth } from "@clerk/nextjs/server";
 import Link from "next/link";
 import { UserButton } from "@clerk/nextjs";
-import { FC } from "react";
 
 export const Header = async () => {
   const { userId } = await auth();
