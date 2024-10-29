@@ -9,27 +9,27 @@ import { motion } from "framer-motion"
 
 const testimonials = [
   {
-    text: "“This product has completely transformed how I manage my projects and deadlines”",
+    text: "“This platform has completely transformed how I manage my projects and keep up with deadlines.”",
     name: "Sophia Perez",
-    title: "Director @ Quantum",
+    title: "Director @ Quantum Innovations",
     avatarImg: avatar1,
   },
   {
-    text: "“These AI tools have completely revolutionized our SEO entire strategy overnight”",
+    text: "“Our SEO strategy was revolutionized almost overnight, thanks to these powerful AI-driven tools.”",
     name: "Jamie Lee",
-    title: "Founder @ Pulse",
+    title: "Founder @ Pulse Analytics",
     avatarImg: avatar2,
   },
   {
-    text: "“The user interface is so intuitive and easy to use, it has saved us countless hours”",
+    text: "“An incredibly intuitive interface that’s saved us hours each week—we can’t imagine working without it.”",
     name: "Alisa Hester",
-    title: "Product @ Innovate",
+    title: "Product Manager @ InnovateX",
     avatarImg: avatar3,
   },
   {
-    text: "“Our team's productivity has increased significantly since we started using this tool”",
+    text: "“Since adopting this solution, our team's productivity has surged beyond expectations.”",
     name: "Alec Whitten",
-    title: "CTO @ Tech Solutions",
+    title: "CTO @ TechSolutions Inc.",
     avatarImg: avatar4,
   },
 ]
@@ -39,11 +39,10 @@ export const Testimonials = () => {
     <section className="py-20 md:py-28">
       <div className="container">
         <h2 className="text-5xl text-center lg:text-7xl font-semibold tracking-tighter">
-          Beyound Expections.
+          Real Results, Real Experiences
         </h2>
         <p className="text-white/70 max-w-2xl mx-auto text-center pt-5 text-lg md:text-xl tracking-tight">
-          Lorem ipsum dolor sit amet consectetur, adipisicing elit. Veritatis,
-          maiores! Sunt odit dicta ea.
+          Discover how our solutions are helping teams achieve more, faster, and with ease.
         </p>
         <div className="flex overflow-hidden mt-10 [mask-image:linear-gradient(to_right,transparent,black_20%,black_80%,transparent)]">
           <motion.div

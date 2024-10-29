@@ -97,9 +97,10 @@ const CreateTestPage = () => {
   };
 
   return (
-    <div className="min-h-screen w-full bg-gray-100 p-10 font-poppins">
-      <div><Link href={"/admin"}>
-      <Button >Dashboard</Button>
+    <div className="min-h-screen w-full bg-zinc-900 p-10 font-poppins">
+      <div className='flex items-center justify-center mb-4'><Link href={"/admin"}>
+      
+      <Button variant="secondary" size="lg" > Admin Dashboard</Button>
       </Link>
       </div>
       <div className="max-w-3xl mx-auto bg-white p-8 rounded-lg shadow-md mb-6">
@@ -136,7 +137,7 @@ const CreateTestPage = () => {
             <input
               type="text"
               {...register('testAccessPeriod', { required: true })}
-              placeholder="Enter (in hours)"
+              placeholder="Enter (in minutes)"
               className="w-1/4 p-3 text-gray-900 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
             />
           </div>

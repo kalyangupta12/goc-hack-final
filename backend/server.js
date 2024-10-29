@@ -142,7 +142,7 @@ app.get('/api/tests/:testId', async (req, res) => {
         path: 'questions',
         select: includeAnswers ? '' : '-CorrectAnswer' // Include correct answers based on query parameter
       })
-      .select('testName Duration Subject Description totalMarks testCode');
+      .select('testName testAccessPeriod Subject Description totalMarks testCode');
 
     if (!test) {
       return res.status(404).json({ 
@@ -157,7 +157,7 @@ app.get('/api/tests/:testId', async (req, res) => {
       test: {
         _id: test._id,
         testName: test.testName,
-        Duration: test.Duration,
+        testAccessPeriod: test.testAccessPeriod,
         Subject: test.Subject,
         Description: test.Description,
         testCode: test.testCode,
@@ -189,7 +189,7 @@ app.get('/api/tests/:testId', async (req, res) => {
 
 
 // Submit test (existing route remains the same)
-// app.post('/api/tests/:testId/submit', async (req, res) => {
+// app.post('/a/:testId/submit', async (req, res) => {
 //   const { answers, userId } = req.body;
 
 //   try {

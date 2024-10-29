@@ -1,5 +1,7 @@
 "use client";
 
+import starsBg from "@/assets/stars.png"
+
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
@@ -30,8 +32,10 @@ import { useUser } from '@clerk/nextjs'
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 flex items-center justify-center p-4 text-black">
-      <div className="max-w-md w-full bg-white rounded-lg shadow-md p-8">
+    <div className="min-h-screen bg-black flex items-center justify-center p-4 text-black"  style={{
+      backgroundImage: `url(${starsBg.src})`,
+    }}>
+      <div className="max-w-md w-full bg-zinc-200 rounded-lg shadow-md p-8">
         <h1 className="text-2xl font-bold text-center mb-6">Enter Test Code</h1>
         
         <form onSubmit={handleSubmit} className="space-y-4">
@@ -48,7 +52,7 @@ import { useUser } from '@clerk/nextjs'
           
           <Button
             type="submit"
-            className="w-full"
+            className="w-full bg-purple-900"
             disabled={loading || code.length !== 6}
           >
             {loading ? 'Finding Test...' : 'Start Test'}
@@ -58,5 +62,6 @@ import { useUser } from '@clerk/nextjs'
     </div>
   );
 };
+
 
 export default TestCodeEntry;

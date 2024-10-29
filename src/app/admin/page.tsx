@@ -109,9 +109,10 @@ export default function Dashboard() {
   }, [user]);
 
   const filteredUsers = users.filter((e) =>
-      e.testName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      e.StudentEmail.toLowerCase().includes(searchTerm.toLowerCase())
-  )
+    (e.testName?.toLowerCase().includes(searchTerm?.toLowerCase() || "") ||
+     e.StudentEmail?.toLowerCase().includes(searchTerm?.toLowerCase() || ""))
+  );
+  
 
   const filteredTests = tests.filter((e) =>
     e.testName.toLowerCase().includes(searchTests.toLowerCase())

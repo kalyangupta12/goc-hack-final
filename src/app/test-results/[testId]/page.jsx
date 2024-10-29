@@ -61,9 +61,9 @@ const TestResults = () => {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <div className="bg-zinc-900 rounded-lg shadow-md mb-8">
+      <div className="bg-zinc-100 rounded-lg shadow-md mb-8">
         <div className="p-6">
-          <h1 className="text-2xl font-bold mb-6 text-zinc-200">Test Results: {test.testName}</h1>
+          <h1 className="text-2xl font-bold mb-6 text-zinc-900">Test Results: {test.testName}</h1>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
             <div className="bg-blue-100 p-4 rounded-lg text-center">
               <p className="text-sm text-gray-600">Total Score</p>

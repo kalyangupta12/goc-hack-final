@@ -5,7 +5,8 @@ import { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation';
 import axios from 'axios';
 import { toast } from 'react-hot-toast';
-import { useUser } from '@clerk/nextjs'
+import { useUser  } from '@clerk/nextjs'
+
 const AttemptTest = () => {
   const params = useParams();
   const testId = params.testId;
@@ -13,15 +14,16 @@ const AttemptTest = () => {
   const [answers, setAnswers] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [timeLeft, setTimeLeft] = useState(null);
-  const { user } = useUser();
+  const { user } = useUser ();
+
   useEffect(() => {
     const fetchTest = async () => {
       try {
         const response = await axios.get(`http://localhost:5000/api/tests/${testId}`);
         setTest(response.data.test);
         // Set initial time based on test duration (assuming duration is in minutes)
-        if (response.data.test.Duration) {
-          setTimeLeft(response.data.test.Duration * 60); // Convert minutes to seconds
+        if (response.data.test.testAccessPeriod) {
+          setTimeLeft(response.data.test.testAccessPeriod * 60); // Convert minutes to seconds
         }
       } catch (error) {
         console.error('Error fetching test data:', error);
@@ -42,8 +44,8 @@ const AttemptTest = () => {
       setTimeLeft((prev) => {
         if (prev <= 1) {
           clearInterval(timer);
-          handleSubmit(new Event('submit'));
-          return 0;
+          toast.error('Time is up! You cannot submit the test.'); // Show toast when time is up
+          return 0; // Stop the timer and set timeLeft to 0
         }
         return prev - 1;
       });
@@ -60,6 +62,13 @@ const AttemptTest = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // Check if time is up
+    if (timeLeft <= 0) {
+      toast.error('Time is up! You cannot submit the test.'); // Show toast if time is up
+      return; // Prevent submission if time is up
+    }
+ 
     setIsSubmitting(true);
 
     try {
@@ -70,7 +79,8 @@ const AttemptTest = () => {
       });
   
       const response = await axios.post(`http://localhost:5000/api/tests/${testId}/submit`, { 
-        answers: formattedAnswers , userId: user?.primaryEmailAddress?.emailAddress
+        answers: formattedAnswers, 
+        userId: user?.primaryEmailAddress?.emailAddress
       });
       
       toast.success(`Test submitted successfully! Score: ${response.data.score}`);
@@ -98,14 +108,13 @@ const AttemptTest = () => {
   return (
     <div className="container mx-auto px-4 py-8 text-black" style={{
       backgroundImage: `url(${starsBg.src})`,
-      
     }}>
       <div className="bg-zinc-200 rounded-lg shadow-md mb-8">
         <div className="p-6">
           <div className="flex justify-between items-center mb-6">
             <h1 className="text-2xl font-bold">Attempt Test: {test.testName}</h1>
             {timeLeft !== null && (
-              <div className="text-lg font-semibold p-2 bg-blue-100 rounded-lg">
+              <div className="text-lg font-semibold p-2 bg -blue-100 rounded-lg">
                 Time Left: {formatTime(timeLeft)}
               </div>
             )}
@@ -117,7 +126,7 @@ const AttemptTest = () => {
               <li>Read each question carefully before answering</li>
               <li>Once submitted, answers cannot be changed</li>
               <li>Each question carries {test.questions[0]?.Marks || 1} marks</li>
-              <li>Total duration: {test.Duration} minutes</li>
+              <li>Total duration: {test.testAccessPeriod} minutes</li>
             </ul>
           </div>
           
@@ -164,7 +173,7 @@ const AttemptTest = () => {
                 {isSubmitting ? 'Submitting...' : 'Submit Test'}
               </button>
               
-              <div className="text-gray-600">
+              <div className="text-gray-900">
                 Total Questions: {test.questions.length}
               </div>
             </div>

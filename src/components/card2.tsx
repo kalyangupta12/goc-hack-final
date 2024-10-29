@@ -2,10 +2,12 @@ import React, { useState } from "react"
 import Image from "next/image"
 import { IconChevronRight } from "@tabler/icons-react"
 
+import Card from "@/assets/tits.jpg"
+
 export const StripeCard = () => {
   return (
     <>
-      <div className="w-[90%]] h-[440px] group mx-auto dark:bg-[#252525] p-2 bg-white dark:border-0 border overflow-hidden rounded-md dark:text-white text-black ">
+      <div className="w-[90%]] h-[440px] group mx-auto bg-[#252525] p-2  border-black overflow-hidden rounded-md dark:text-white ">
         <figure className="w-full h-72 group-hover:h-72 transition-all duration-300 dark:bg-[#0a121a] bg-[#3c1c78] p-2 rounded-md relative overflow-hidden">
           <div
             style={{
@@ -14,8 +16,8 @@ export const StripeCard = () => {
             }}
             className="absolute top-0 left-0 w-full h-full  group-hover:opacity-100 opacity-0  transition-all duration-300"
           ></div>
-          <Image
-            src="/og.webp"
+          <img
+            src={Card.src}
             alt="shoes"
             width={500}
             height={500}

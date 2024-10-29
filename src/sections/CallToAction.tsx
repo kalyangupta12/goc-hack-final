@@ -11,6 +11,7 @@ import {
   useTransform,
 } from "framer-motion"
 import { RefObject, useEffect, useRef } from "react"
+import { GlazeButton } from "@/components/glaze-button"
 
 //for follow mouse hover, we created a custom hook
 const useRelativeMousePosition = (to: RefObject<HTMLElement>) => {
@@ -87,14 +88,13 @@ export const CallToAction = () => {
         <div className="container">
           <div className="relative">
             <h2 className="text-5xl md:text-6xl lg:text-7xl font-semibold tracking-tighter text-center max-w-lg mx-auto">
-              AI-driven SEO for everyone.
+            Take Your Test Automation to the Next Level
             </h2>
             <p className="text-lg text-white/70 text-center mt-10 max-w-xl mx-auto">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque
-              beatae blanditiis aliquid.
+            Excelitest offers the ultimate platform for efficient, intelligent test automation that empowers your team to deliver faster and with greater confidence.
             </p>
             <div className="text-center mt-10">
-              <Button />
+              <GlazeButton/>
             </div>
           </div>
         </div>

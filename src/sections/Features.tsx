@@ -21,7 +21,7 @@ const tabs = [
   },
   {
     icon: "/assets/lottie/click.lottie",
-    title: "One-click optimization",
+    title: "Excel to MCQ Test",
     isNew: false,
     backgroundPositionX: 98,
     backgroundPositionY: 100,
@@ -29,7 +29,7 @@ const tabs = [
   },
   {
     icon: "/assets/lottie/stars.lottie",
-    title: "Smart keyword generator",
+    title: "Smart QR-code generator",
     isNew: true,
     backgroundPositionX: 100,
     backgroundPositionY: 27,
@@ -176,8 +176,8 @@ export const Features = () => {
           Elevate your test creation process with ExceliTest.{" "}
         </h2>
         <p className="text-white/70 text-lg md:text-xl text-center tracking-tight mt-5 max-w-3xl mx-auto">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Quod quis,
-          vero sint consequuntur molestiae velit tempore illo ipsam .
+        ExceliTest simplifies test creation with an intuitive dashboard, effortless optimization, and advanced keyword generation.
+        Focus on quality content while we handle the complexities for you.
         </p>
         <div className="mt-10 flex flex-col lg:flex-row gap-5">
           {tabs.map((tab, tabIndex) => (

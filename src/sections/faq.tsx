@@ -5,28 +5,28 @@ import { IconPlus } from "@tabler/icons-react"
 
 const tabs = [
   {
-    title:
-      "Data add kardo bhai log mera daat ka root canal aur anal dono ho gya hai",
+    title: "How does Excelitest streamline test automation?",
     description:
-      "UI components can improve UX by providing familiar, consistent interactions that make it easy for users to navigate and interact with an application.",
+      "Excelitest automates repetitive test cases, reducing manual effort and increasing testing efficiency across projects, helping teams deploy faster and with more confidence.",
     imageUrl:
       "https://images.unsplash.com/photo-1709949908058-a08659bfa922?q=80&w=1200&auto=format",
   },
   {
-    title: "Common UI component design challenges?",
+    title: "What are the integration options with Excelitest?",
     description:
-      "Some common challenges include maintaining consistency across different devices and screen sizes, ensuring compatibility with various browsers and assistive technologies, and balancing flexibility with ease of use.",
+      "Excelitest integrates seamlessly with popular CI/CD tools, version control systems, and reporting platforms, making it easy to incorporate automated testing into your existing workflow.",
     imageUrl:
       "https://images.unsplash.com/photo-1548192746-dd526f154ed9?q=80&w=1200&auto=format",
   },
   {
-    title: "Ensuring UI component responsiveness?",
+    title: "How can I ensure effective test coverage with Excelitest?",
     description:
-      "     Developers can ensure the responsiveness of UI components by using techniques such as fluid layouts, flexible grids, and media queries to adapt the components to different screen sizes and orientations.",
+      "With Excelitest, you can create comprehensive test suites that cover a wide range of scenarios, ensuring high coverage and thorough validation of application functionality.",
     imageUrl:
       "https://images.unsplash.com/photo-1693581176773-a5f2362209e6?q=80&w=1200&auto=format",
   },
 ]
+
 export const FAQ = () => {
   const [activeIndex, setActiveIndex] = useState<number | null>(0)
   const [activeItem, setActiveItem] = useState<
@@ -51,8 +51,7 @@ export const FAQ = () => {
           F A Q
         </h2>
         <p className="text-white/70 max-w-2xl mx-auto text-center pt-5 text-lg md:text-xl tracking-tight">
-          Lorem ipsum dolor sit amet consectetur, adipisicing elit. Veritatis,
-          maiores! Sunt odit dicta ea.
+        Find answers to common questions about using Excelitest for your test automation needs.
         </p>
         <div className="h-fit mt-20 border-2 border-zinc-800 rounded-lg p-2  ">
           {tabs.map((tab, index) => (

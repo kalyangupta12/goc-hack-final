@@ -18,16 +18,14 @@ export const Footer2 = () => {
             <img src={Logo.src} />
             <article className="py-2  2xl:w-80 w-64  space-y-1">
               <p className="text-sm  leading-[120%] ">
-                Copy and paste designs that you love to have on your website.
-                Don't forget to share them with your friends. I'll bring more
-                and more components that really make sense for your design.
+              Unlock the potential of your testing process with Excelitest. Streamline your workflows and enhance productivity effortlessly.
               </p>
             </article>
           </div>
 
           <div className="sm:block flex sm:mt-0 mt-4  gap-2 sm:w-auto w-full sm:space-y-2 relative z-[1]">
             <a
-              href=""
+              href="#"
               target="_blank"
               className="bg-gray-50 sm:w-auto w-full   grid place-content-center 2xl:h-40 h-32 2xl:p-10 p-5 rounded-lg"
             >
@@ -46,7 +44,7 @@ export const Footer2 = () => {
               </svg>
             </a>
             <a
-              href="https://x.com/naymur_dev"
+              href="#"
               target="_blank"
               className="bg-gray-50 sm:w-auto w-full  grid place-content-center  2xl:h-40 h-32 2xl:p-10 p-5 rounded-lg"
             >

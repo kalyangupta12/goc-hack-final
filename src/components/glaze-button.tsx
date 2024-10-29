@@ -47,7 +47,7 @@ export const GlazeButton: React.FC = () => {
   return (
     <div className="flex justify-center">
       <a
-        href="https://github.com/naymurdev/uilayout"
+        href="/upload-handler-3"
         target="_blank"
         className="relative inline-block  w-52 h-[60px] mx-auto group dark:bg-black bg-white dark:border-white border-black border-2 rounded-lg"
       >

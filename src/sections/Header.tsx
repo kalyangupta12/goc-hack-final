@@ -16,7 +16,7 @@ export const Header = async () => {
           <div className="hidden md:block absolute inset-0 backdrop-blur -z-10 "></div>
           <div>
             {/* To make the border of the Logo inline-flex to make it in center aligfned with Logo */}
-            <div className="border h-10 w-28 rounded-xl border-white/15 inline-flex justify-center items-center mr-10">
+            <div className="border h-10 w-28 rounded-xl border-white/15 inline-flex justify-center items-center px-2 mr-10">
               <img src={Logo.src} />
             </div>
           </div>
