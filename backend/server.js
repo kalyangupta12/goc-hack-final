@@ -72,6 +72,26 @@ app.post('/api/tests', async (req, res) => {
   }
 });
 
+app.get('/api/tests', async (req, res) => {
+    try {
+      // Get the testAdmin email from query parameters
+      const { testAdminEmail } = req.query;
+  
+      if (!testAdminEmail) {
+        return res.status(400).json({ message: 'Missing testAdminEmail query parameter' });
+      }
+  
+      // Ensure that the query filters by `testAdmin`, not `_id`
+      const tests = await Test.find({ testAdmin: testAdminEmail });
+  
+      res.status(200).json({ success: true, tests });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ success: false, message: 'Error fetching test details', error: error.message });
+    }
+  });
+  
+
 // Get test by code
 app.get('/api/tests/code/:code', async (req, res) => {
   try {
@@ -278,6 +298,73 @@ app.get('/api/tests/:testId/results', async (req, res) => {
   }
 });
 
+// Get all test results created by a specific test admin
+// Add this route after your existing routes but before app.listen()
+
+// Get all results for tests created by a specific test admin
+app.get('/api/admin/test-results', async (req, res) => {
+    try {
+      const { testAdminEmail } = req.query;
+  
+      if (!testAdminEmail) {
+        return res.status(400).json({ 
+          success: false, 
+          message: 'Missing testAdminEmail parameter' 
+        });
+      }
+  
+      // First, get all tests created by this admin
+      const tests = await Test.find({ testAdmin: testAdminEmail });
+      
+      if (!tests || tests.length === 0) {
+        return res.json({
+          success: true,
+          results: [],
+          message: 'No tests found for this admin'
+        });
+      }
+  
+      // Get all test IDs
+      const testIds = tests.map(test => test._id);
+  
+      // Find all results for these tests
+      const results = await TestResult.find({
+        testId: { $in: testIds }
+      })
+      .populate({
+        path: 'testId',
+        select: 'testName testCode Subject Duration testAdmin'
+      })
+      .populate('userId', 'name email') // Assuming you have a User model with these fields
+      .sort({ submittedAt: -1 }); // Most recent first
+  
+      // Format the results
+      const formattedResults = results.map(result => ({
+        resultId: result._id,
+        testName: result.testId.testName,
+        testCode: result.testId.testCode,
+        subject: result.testId.Subject,
+        duration: result.testId.Duration,
+        studentEmail: result.userId,
+        score: result.score,
+        submittedAt: result.submittedAt
+      }));
+  
+      res.json({
+        success: true,
+        count: formattedResults.length,
+        results: formattedResults
+      });
+  
+    } catch (error) {
+      console.error('Error fetching test results:', error);
+      res.status(500).json({
+        success: false,
+        message: 'Error fetching test results',
+        error: error.message
+      });
+    }
+  });
 // Root Route
 app.get('/', (req, res) => {
   res.send(`Server is running on port ${PORT}`);

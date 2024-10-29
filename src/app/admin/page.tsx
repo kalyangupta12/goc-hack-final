@@ -1,7 +1,6 @@
 "use client"
-
 import { UserButton, useUser } from "@clerk/nextjs"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import {
   Bell,
   LogOut,
@@ -39,7 +38,9 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
-import { Separator } from "@/components/ui/separator"
+import { Separator } from "@/components/ui/separator";
+import axios from 'axios';
+import Link from "next/link"
 
 // Mock data for the dashboard
 const summaryStats = {
@@ -66,60 +67,56 @@ const recentActivity = [
   },
 ]
 
-const users = [
-  {
-    id: 1,
-    username: "john_doe",
-    email: "john@example.com",
-    role: "user",
-    registrationDate: "2023-01-15",
-  },
-  {
-    id: 2,
-    username: "jane_smith",
-    email: "jane@example.com",
-    role: "admin",
-    registrationDate: "2023-02-20",
-  },
-  {
-    id: 3,
-    username: "bob_johnson",
-    email: "bob@example.com",
-    role: "user",
-    registrationDate: "2023-03-10",
-  },
-]
-
-const tests = [
-  {
-    id: 1,
-    name: "Math Quiz",
-    createdBy: "john_doe",
-    creationDate: "2023-04-01",
-  },
-  {
-    id: 2,
-    name: "Science Test",
-    createdBy: "jane_smith",
-    creationDate: "2023-04-15",
-  },
-  {
-    id: 3,
-    name: "History Exam",
-    createdBy: "bob_johnson",
-    creationDate: "2023-05-01",
-  },
-]
-
 export default function Dashboard() {
-  const [searchTerm, setSearchTerm] = useState("")
-  const [sidebarOpen, setSidebarOpen] = useState(false)
+  const [searchTerm, setSearchTerm] = useState("");
+  const [searchTests, setSearchTests] = useState("");
+  const [users, setUsers] = useState([]);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [tests, setTests] = useState([]);
+  const { user } = useUser();
 
-  const filteredUsers = users.filter(
-    (user) =>
-      user.username.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      user.email.toLowerCase().includes(searchTerm.toLowerCase())
+  
+  useEffect(() => {
+    if (user) { 
+      const fetchTests = async () => {
+        try {
+          const response = await axios.get('http://localhost:5000/api/tests', {
+            params: { testAdminEmail: user?.primaryEmailAddress?.emailAddress }
+          });
+  
+          setTests(response.data.tests);
+          console.log('Fetched tests:', response.data.tests); // Log the fetched tests directly
+        } catch (error) {
+          console.error('Error fetching tests:', error);
+        }
+      };
+  
+      const fetchUsers = async () => {
+        try {
+          const response = await axios.get('http://localhost:5000/api/admin/test-results', {
+            params: { testAdminEmail: user?.primaryEmailAddress?.emailAddress }
+          });
+          setUsers(response.data.results);
+          console.log('Fetched users:', response.data.results); // Log the fetched users
+        } catch (error) {
+          console.error('Error fetching data', error);
+        }
+      };
+  
+      fetchTests(); // Call fetchTests
+      fetchUsers(); // Call fetchUsers
+    }
+  }, [user]);
+
+  const filteredUsers = users.filter((e) =>
+      e.testName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      e.StudentEmail.toLowerCase().includes(searchTerm.toLowerCase())
   )
+
+  const filteredTests = tests.filter((e) =>
+    e.testName.toLowerCase().includes(searchTests.toLowerCase())
+  );
+
 
   return (
     <div className="flex h-screen bg-zinc-900 text-gray-100">
@@ -177,123 +174,17 @@ export default function Dashboard() {
         {/* Main content with tabs */}
         <main className="flex-1 overflow-x-hidden overflow-y-auto bg-gray-900">
           <div className="container mx-auto px-4 py-6">
-            <Tabs defaultValue="summary" className="space-y-4">
-              <TabsList className="grid w-full grid-cols-2 lg:grid-cols-4">
-                <TabsTrigger value="summary">Summary</TabsTrigger>
+            <Tabs defaultValue="Users" className="space-y-4">
+              <TabsList className="grid w-full grid-cols-2">
                 <TabsTrigger value="users">Users</TabsTrigger>
                 <TabsTrigger value="tests">Tests</TabsTrigger>
               </TabsList>
 
-              {/* Summary tab content */}
-              <TabsContent value="summary" className="space-y-4">
-                {/* Summary statistics cards */}
-                <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-                  <Card>
-                    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                      <CardTitle className="text-sm font-medium">
-                        Total Users
-                      </CardTitle>
-                      <Users className="h-4 w-4 text-muted-foreground" />
-                    </CardHeader>
-                    <CardContent>
-                      <div className="text-2xl font-bold">
-                        {summaryStats.totalUsers}
-                      </div>
-                    </CardContent>
-                  </Card>
-                  <Card>
-                    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                      <CardTitle className="text-sm font-medium">
-                        Total Tests
-                      </CardTitle>
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="2"
-                        className="h-4 w-4 text-muted-foreground"
-                      >
-                        <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
-                        <circle cx="9" cy="7" r="4" />
-                        <path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" />
-                      </svg>
-                    </CardHeader>
-                    <CardContent>
-                      <div className="text-2xl font-bold">
-                        {summaryStats.totalTests}
-                      </div>
-                    </CardContent>
-                  </Card>
-                  <Card>
-                    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                      <CardTitle className="text-sm font-medium">
-                        Active Tests
-                      </CardTitle>
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="2"
-                        className="h-4 w-4 text-muted-foreground"
-                      >
-                        <rect width="20" height="14" x="2" y="5" rx="2" />
-                        <path d="M2 10h20" />
-                      </svg>
-                    </CardHeader>
-                    <CardContent>
-                      <div className="text-2xl font-bold">
-                        {summaryStats.activeTests}
-                      </div>
-                    </CardContent>
-                  </Card>
-                </div>
-
-                {/* Recent activity table */}
-                <Card>
-                  <CardHeader>
-                    <CardTitle>Recent Activity</CardTitle>
-                    <CardDescription>
-                      Latest actions performed in the system
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <Table>
-                      <TableHeader>
-                        <TableRow>
-                          <TableHead className="w-[100px]">Action</TableHead>
-                          <TableHead>User</TableHead>
-                          <TableHead className="text-right">
-                            Timestamp
-                          </TableHead>
-                        </TableRow>
-                      </TableHeader>
-                      <TableBody>
-                        {recentActivity.map((activity, index) => (
-                          <TableRow key={index}>
-                            <TableCell className="font-medium">
-                              {activity.action}
-                            </TableCell>
-                            <TableCell>{activity.user}</TableCell>
-                            <TableCell className="text-right">
-                              {activity.timestamp}
-                            </TableCell>
-                          </TableRow>
-                        ))}
-                      </TableBody>
-                    </Table>
-                  </CardContent>
-                </Card>
-              </TabsContent>
+             
 
               {/* Users tab content */}
-              <TabsContent value="users" className="space-y-4">
-                <Card>
+              <TabsContent value="users" className="space-y-4 ">
+                <Card className="bg-gray-100">
                   <CardHeader>
                     <CardTitle>Manage Users</CardTitle>
                     <CardDescription>
@@ -309,47 +200,45 @@ export default function Dashboard() {
                         onChange={(e) => setSearchTerm(e.target.value)}
                         className="md:max-w-sm"
                       />
-                      <Button className="md:w-auto">
-                        <Plus className="mr-2 h-4 w-4" /> Add User
-                      </Button>
+                     
                     </div>
                     {/* Users table */}
                     <div className="overflow-x-auto">
                       <Table>
                         <TableHeader>
                           <TableRow>
-                            <TableHead>Username</TableHead>
-                            <TableHead>Email</TableHead>
+                            <TableHead>Test Name</TableHead>
+                            <TableHead>Students</TableHead>
                             <TableHead className="hidden md:table-cell">
-                              Role
+                              Score
                             </TableHead>
                             <TableHead className="hidden md:table-cell">
-                              Registration Date
+                              Attempted At
                             </TableHead>
-                            <TableHead>Actions</TableHead>
+                            {/* <TableHead>Actions</TableHead> */}
                           </TableRow>
                         </TableHeader>
                         <TableBody>
                           {filteredUsers.map((user) => (
-                            <TableRow key={user.id}>
+                            <TableRow key={user.resultId}>
                               <TableCell className="font-medium">
-                                {user.username}
+                                {user.testName}
                               </TableCell>
-                              <TableCell>{user.email}</TableCell>
+                              <TableCell>{user.studentEmail}</TableCell>
                               <TableCell className="hidden md:table-cell">
-                                {user.role}
+                                {user.score}
                               </TableCell>
                               <TableCell className="hidden md:table-cell">
-                                {user.registrationDate}
+                                {user.submittedAt}
                               </TableCell>
-                              <TableCell>
+                              {/* <TableCell>
                                 <Button variant="ghost" size="sm">
                                   View
                                 </Button>
                                 <Button variant="ghost" size="sm">
                                   Delete
                                 </Button>
-                              </TableCell>
+                              </TableCell> */}
                             </TableRow>
                           ))}
                         </TableBody>
@@ -374,10 +263,14 @@ export default function Dashboard() {
                       <Input
                         placeholder="Search tests..."
                         className="md:max-w-sm"
+                        value={searchTests}
+                        onChange={(e) => setSearchTests(e.target.value)}
                       />
+                      <Link href={"/upload-handler-3"}>
                       <Button className="md:w-auto">
                         <Plus className="mr-2 h-4 w-4" /> Create New Test
                       </Button>
+                      </Link>
                     </div>
                     {/* Tests table */}
                     <div className="overflow-x-auto">
@@ -385,41 +278,44 @@ export default function Dashboard() {
                         <TableHeader>
                           <TableRow>
                             <TableHead>Test Name</TableHead>
-                            <TableHead className="hidden md:table-cell">
+                            {/* <TableHead className="hidden md:table-cell">
                               Created By
                             </TableHead>
                             <TableHead className="hidden md:table-cell">
                               Creation Date
-                            </TableHead>
+                            </TableHead> */}
                             <TableHead>Actions</TableHead>
                           </TableRow>
                         </TableHeader>
                         <TableBody>
-                          {tests.map((test) => (
-                            <TableRow key={test.id}>
+                          {filteredTests.map((test) => (
+                            <TableRow key={test._id}>
                               <TableCell className="font-medium">
-                                {test.name}
+                                {test.testName}
                               </TableCell>
-                              <TableCell className="hidden  md:table-cell">
+                              {/* <TableCell className="hidden  md:table-cell">
                                 {test.createdBy}
                               </TableCell>
                               <TableCell className="hidden md:table-cell">
                                 {test.creationDate}
-                              </TableCell>
+                              </TableCell> */}
                               <TableCell>
-                                <Button variant="ghost" size="sm">
+                                {/* <Button variant="ghost" size="sm">
                                   Edit
                                 </Button>
                                 <Button variant="ghost" size="sm">
                                   Delete
-                                </Button>
-                                <Button
-                                  variant="ghost"
-                                  size="sm"
-                                  className="hidden md:inline-flex"
-                                >
-                                  Preview
-                                </Button>
+                                </Button> */}
+                                
+                                <Link href={`/attempt-test/${test._id}`}>
+              <Button
+                variant="ghost"
+                size="sm"
+                className="hidden md:inline-flex"
+              >
+                View
+              </Button>
+            </Link>
                               </TableCell>
                             </TableRow>
                           ))}

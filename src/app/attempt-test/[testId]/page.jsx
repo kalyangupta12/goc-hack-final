@@ -1,4 +1,5 @@
 "use client";
+import starsBg from "@/assets/stars.png"
 
 import { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation';
@@ -95,8 +96,11 @@ const AttemptTest = () => {
   }
 
   return (
-    <div className="container mx-auto px-4 py-8 text-black">
-      <div className="bg-white rounded-lg shadow-md mb-8">
+    <div className="container mx-auto px-4 py-8 text-black" style={{
+      backgroundImage: `url(${starsBg.src})`,
+      
+    }}>
+      <div className="bg-zinc-200 rounded-lg shadow-md mb-8">
         <div className="p-6">
           <div className="flex justify-between items-center mb-6">
             <h1 className="text-2xl font-bold">Attempt Test: {test.testName}</h1>
