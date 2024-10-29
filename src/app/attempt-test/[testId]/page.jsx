@@ -78,7 +78,7 @@ const AttemptTest = () => {
         formattedAnswers[index] = answers[index].replace('Option', '');
       });
   
-      const response = await axios.post(`http://localhost:5000/api/tests/${testId}/submit`, { 
+      const response = await axios.post(`https://excelitest-api.vercel.app/api/tests/${testId}/submit`, { 
         answers: formattedAnswers, 
         userId: user?.primaryEmailAddress?.emailAddress
       });
