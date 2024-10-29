@@ -17,7 +17,7 @@ import { useUser } from '@clerk/nextjs'
     setLoading(true);
 
     try {
-      const response = await fetch(`http://localhost:5000/api/tests/code/${code}`);
+      const response = await fetch(`https://excelitest-api.vercel.app/api/tests/code/${code}`);
       if (response.ok) {
         const data = await response.json();
         router.push(`/attempt-test/${data.testId}`);
