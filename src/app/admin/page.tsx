@@ -42,31 +42,6 @@ import { Separator } from "@/components/ui/separator";
 import axios from 'axios';
 import Link from "next/link"
 
-// Mock data for the dashboard
-const summaryStats = {
-  totalUsers: 1234,
-  totalTests: 567,
-  activeTests: 89,
-}
-
-const recentActivity = [
-  {
-    action: "New user registered",
-    user: "john@example.com",
-    timestamp: "2 minutes ago",
-  },
-  {
-    action: "Test created",
-    user: "sarah@example.com",
-    timestamp: "15 minutes ago",
-  },
-  {
-    action: "User deleted",
-    user: "admin@example.com",
-    timestamp: "1 hour ago",
-  },
-]
-
 export default function Dashboard() {
   const [searchTerm, setSearchTerm] = useState("");
   const [searchTests, setSearchTests] = useState("");
