@@ -37,6 +37,7 @@ export const Header = async () => {
               <Button text="Create Test" />
             </Link> */}
           </div>
+          if(!userId){
           <div className="flex gap-4 items-center">
             <Link href="/sign-in">
               <Button text="Get Started" />
@@ -45,6 +46,7 @@ export const Header = async () => {
               <Button text="Create Test" />
             </Link> */}
           </div>
+          }
           <div>
             <UserButton />
           </div>
