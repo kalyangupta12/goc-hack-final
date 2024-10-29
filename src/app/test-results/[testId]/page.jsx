@@ -18,8 +18,8 @@ const TestResults = () => {
     const fetchResults = async () => {
       try {
         const [testResponse, resultsResponse] = await Promise.all([
-          axios.get(`http://localhost:5000/api/tests/${testId}?includeAnswers=true`),
-          axios.get(`http://localhost:5000/api/tests/${testId}/results`)
+          axios.get(`https://excelitest-api.vercel.app/api/tests/${testId}?includeAnswers=true`),
+          axios.get(`https://excelitest-api.vercel.app/api/tests/${testId}/results`)
         ]);
         setTest(testResponse.data.test);
         setResults(resultsResponse.data);
