@@ -4,7 +4,7 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const connDB = require('./config/DB');
-const Test = require('./models/Test');
+const Test = require('./models/test');
 const TestResult = require('./models/testresult');
 const crypto = require('crypto');
 
