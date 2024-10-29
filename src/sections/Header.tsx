@@ -7,7 +7,7 @@ import Link from "next/link";
 import { UserButton } from "@clerk/nextjs";
 import { FC } from "react";
 
-const Header: FC = async () => {
+export const Header = async () => {
   const { userId } = await auth();
 
   return (
@@ -54,4 +54,4 @@ const Header: FC = async () => {
   );
 };
 
-export default Header;
+
