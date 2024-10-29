@@ -4,7 +4,7 @@ import { useUser } from '@clerk/nextjs';
 import React, { useState } from 'react';
 import * as XLSX from 'xlsx';
 import { ToastContainer, toast } from 'react-toastify';
-import TestShareCard from '../upload-handler/page';
+import { TestShareCard } from '@/sections/TestShareCard'
 import 'react-toastify/dist/ReactToastify.css';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import { useForm, useFieldArray } from 'react-hook-form';
