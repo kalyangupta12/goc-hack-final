@@ -21,7 +21,7 @@ import {
 import { Input } from '@/components/ui/input';
 import { toast } from 'react-toastify';
 
-const TestShareCard = ({ testLink, testCode }) => {
+export const TestShareCard = ({ testLink, testCode }) => {
   const [showQR, setShowQR] = useState(false);
 
   const copyToClipboard = async (text) => {
@@ -141,4 +141,3 @@ const TestShareCard = ({ testLink, testCode }) => {
   );
 };
 
-export default TestShareCard;
