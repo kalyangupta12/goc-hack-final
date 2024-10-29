@@ -19,7 +19,7 @@ const AttemptTest = () => {
   useEffect(() => {
     const fetchTest = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/api/tests/${testId}`);
+        const response = await axios.get(`https://excelitest-api.vercel.app/api/tests/${testId}`);
         setTest(response.data.test);
         // Set initial time based on test duration (assuming duration is in minutes)
         if (response.data.test.testAccessPeriod) {
