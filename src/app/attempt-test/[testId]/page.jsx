@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation';
 import axios from 'axios';
 import { toast } from 'react-hot-toast';
-
+import { useUser } from '@clerk/nextjs'
 const AttemptTest = () => {
   const params = useParams();
   const testId = params.testId;
@@ -12,7 +12,7 @@ const AttemptTest = () => {
   const [answers, setAnswers] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [timeLeft, setTimeLeft] = useState(null);
-
+  const { user } = useUser();
   useEffect(() => {
     const fetchTest = async () => {
       try {
@@ -67,9 +67,9 @@ const AttemptTest = () => {
       Object.keys(answers).forEach(index => {
         formattedAnswers[index] = answers[index].replace('Option', '');
       });
-
+  
       const response = await axios.post(`http://localhost:5000/api/tests/${testId}/submit`, { 
-        answers: formattedAnswers 
+        answers: formattedAnswers , userId: user?.primaryEmailAddress?.emailAddress
       });
       
       toast.success(`Test submitted successfully! Score: ${response.data.score}`);

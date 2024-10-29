@@ -1,10 +1,14 @@
 const mongoose = require('mongoose');
 
 const TestSchema = new mongoose.Schema({
+  testAdmin:{
+    type:String,
+    required: false
+  },
   testName: {
     type: String,
     required: true
-  },
+  }, 
   testCode: {
     type: String,
     required: true,

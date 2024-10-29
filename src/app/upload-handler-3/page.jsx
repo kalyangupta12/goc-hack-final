@@ -1,5 +1,6 @@
 // page.js
 'use client';
+import { useUser } from '@clerk/nextjs';
 import React, { useState } from 'react';
 import * as XLSX from 'xlsx';
 import { ToastContainer, toast } from 'react-toastify';
@@ -8,10 +9,12 @@ import 'react-toastify/dist/ReactToastify.css';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import { useForm, useFieldArray } from 'react-hook-form';
 import axios from 'axios';
-
+import { Button } from '@/components/ui/button';
+import Link from 'next/link';
 const CreateTestPage = () => {
   const [testLink, setTestLink] = useState("");
   const [testCode, setTestCode] = useState("");
+  const { user } = useUser();
 
   const { register, control, handleSubmit, watch, setValue } = useForm({
     defaultValues: {
@@ -53,8 +56,13 @@ const CreateTestPage = () => {
       toast.error('Please provide a test name and upload questions.');
       return;
     }
+    const testData = {
+      ...data,
+      testAdmin: user?.primaryEmailAddress?.emailAddress || '' // Get Clerk user email
+    };
+  
     try {
-      const response = await axios.post('http://localhost:5000/api/tests', data);
+      const response = await axios.post('http://localhost:5000/api/tests', testData);
       if (response.status === 201) {
         toast.success('Test created successfully!');
         console.log('Test created successfully:', response.data);
@@ -90,6 +98,10 @@ const CreateTestPage = () => {
 
   return (
     <div className="min-h-screen w-full bg-gray-100 p-10 font-poppins">
+      <div><Link href={"/admin"}>
+      <Button >Dashboard</Button>
+      </Link>
+      </div>
       <div className="max-w-3xl mx-auto bg-white p-8 rounded-lg shadow-md mb-6">
         <h2 className="text-4xl font-bold text-gray-800 text-center mb-6">Create a New Test</h2>
         <form onSubmit={handleSubmit(onSubmit)}>

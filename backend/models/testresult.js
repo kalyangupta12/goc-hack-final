@@ -8,8 +8,8 @@ const TestResultSchema = new mongoose.Schema({
     required: true,
   },
   userId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'User',
+    type: String,
+    // ref: 'User',
     required: false, // Assuming you have user authentication
   },
   score: {

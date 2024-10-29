@@ -145,15 +145,10 @@ export default function Dashboard() {
             <li>
               <Button variant="ghost" className="w-full justify-start">
                 <Users className="mr-2 h-4 w-4" />
-                Users
+                Students
               </Button>
             </li>
-            <li>
-              <Button variant="ghost" className="w-full justify-start">
-                <Settings className="mr-2 h-4 w-4" />
-                Settings
-              </Button>
-            </li>
+           
           </ul>
         </nav>
       </div>
@@ -187,7 +182,6 @@ export default function Dashboard() {
                 <TabsTrigger value="summary">Summary</TabsTrigger>
                 <TabsTrigger value="users">Users</TabsTrigger>
                 <TabsTrigger value="tests">Tests</TabsTrigger>
-                <TabsTrigger value="settings">Settings</TabsTrigger>
               </TabsList>
 
               {/* Summary tab content */}
@@ -436,42 +430,8 @@ export default function Dashboard() {
                 </Card>
               </TabsContent>
 
-              {/* Settings tab content */}
-              <TabsContent value="settings" className="space-y-4">
-                <Card>
-                  <CardHeader>
-                    <CardTitle>Settings</CardTitle>
-                    <CardDescription>
-                      Manage your account and application settings
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent className="space-y-4">
-                    {/* Change password form */}
-                    <div className="space-y-2">
-                      <label
-                        htmlFor="new-password"
-                        className="text-sm font-medium"
-                      >
-                        Change Password
-                      </label>
-                      <Input
-                        id="new-password"
-                        type="password"
-                        placeholder="Enter new password"
-                      />
-                    </div>
-                    <Button className="w-full md:w-auto">
-                      Update Password
-                    </Button>
-                    <Separator />
-                    {/* Logout button */}
-                    <Button variant="destructive" className="w-full md:w-auto">
-                      <LogOut className="mr-2 h-4 w-4" />
-                      Logout
-                    </Button>
-                  </CardContent>
-                </Card>
-              </TabsContent>
+           
+            
             </Tabs>
           </div>
         </main>

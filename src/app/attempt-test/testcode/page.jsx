@@ -5,12 +5,11 @@ import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { toast } from 'react-toastify';
-
-const TestCodeEntry = () => {
+import { useUser } from '@clerk/nextjs'
+  const TestCodeEntry = () => {
   const [code, setCode] = useState('');
   const [loading, setLoading] = useState(false);
   const router = useRouter();
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);

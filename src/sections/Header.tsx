@@ -25,14 +25,17 @@ export const Header = async () => {
           </div>
 
           <div className=" items-center">
-            <Link href="/student">
+            <Link href="/attempt-test/testcode">
               <Button text="Attend Test" />
             </Link>
           </div>
           <div className="flex gap-4 items-center">
-            <Link href="/admin">
+            <Link href="/upload-handler-3">
               <Button text="Create Test" />
             </Link>
+            {/* <Link href="/admin">
+              <Button text="Create Test" />
+            </Link> */}
           </div>
           <div>
             <UserButton />

@@ -169,49 +169,94 @@ app.get('/api/tests/:testId', async (req, res) => {
 
 
 // Submit test (existing route remains the same)
+// app.post('/api/tests/:testId/submit', async (req, res) => {
+//   const { answers, userId } = req.body;
+
+//   try {
+//     const test = await Test.findById(req.params.testId);
+//     if (!test) return res.status(404).json({ message: 'Test not found' });
+
+//     let score = 0;
+//     const correctAnswers = [];
+
+//     test.questions.forEach((question, index) => {
+//       const submittedAnswer = answers[index];
+//       const correctAnswer = question.CorrectAnswer.replace('Option', '');
+
+//       if (submittedAnswer === correctAnswer) {
+//         score += question.Marks;
+//       }
+
+//       correctAnswers.push({
+//         questionId: question._id,
+//         selectedAnswer: submittedAnswer,
+//       });
+//     });
+
+//     const testResult = new TestResult({
+//       testId: req.params.testId,
+//       score: score,
+//       answers: correctAnswers,
+//       userId: req.params.userId
+//     });
+
+//     await testResult.save();
+
+//     res.json({
+//       message: 'Test submitted successfully',
+//       score: score,
+//       resultId: testResult._id,
+//     });
+//   } catch (error) {
+//     console.error('Error submitting test:', error);
+//     res.status(500).json({ message: 'Server error' });
+//   }
+// });
 app.post('/api/tests/:testId/submit', async (req, res) => {
-  const { answers } = req.body;
-
-  try {
-    const test = await Test.findById(req.params.testId);
-    if (!test) return res.status(404).json({ message: 'Test not found' });
-
-    let score = 0;
-    const correctAnswers = [];
-
-    test.questions.forEach((question, index) => {
-      const submittedAnswer = answers[index];
-      const correctAnswer = question.CorrectAnswer.replace('Option', '');
-
-      if (submittedAnswer === correctAnswer) {
-        score += question.Marks;
-      }
-
-      correctAnswers.push({
-        questionId: question._id,
-        selectedAnswer: submittedAnswer,
+    const { answers, userId } = req.body;
+  
+    try {
+      const test = await Test.findById(req.params.testId);
+      if (!test) return res.status(404).json({ message: 'Test not found' });
+  
+      let score = 0;
+      const correctAnswers = [];
+  
+      test.questions.forEach((question, index) => {
+        const submittedAnswer = answers[index];
+        const correctAnswer = question.CorrectAnswer.replace('Option', '');
+  
+        if (submittedAnswer === correctAnswer) {
+          score += question.Marks;
+        }
+  
+        correctAnswers.push({
+          questionId: question._id,
+          selectedAnswer: submittedAnswer,
+        });
       });
-    });
-
-    const testResult = new TestResult({
-      testId: req.params.testId,
-      score: score,
-      answers: correctAnswers,
-    });
-
-    await testResult.save();
-
-    res.json({
-      message: 'Test submitted successfully',
-      score: score,
-      resultId: testResult._id,
-    });
-  } catch (error) {
-    console.error('Error submitting test:', error);
-    res.status(500).json({ message: 'Server error' });
-  }
-});
-
+  
+      // Save the result in the database
+      const testResult = new TestResult({
+        testId: req.params.testId,
+        score: score,
+        answers: correctAnswers,
+        userId: userId, // directly from req.body
+      });
+  
+      await testResult.save();
+  
+      res.json({
+        message: 'Test submitted successfully',
+        score: score,
+        resultId: testResult._id,
+      });
+    } catch (error) {
+      console.error('Error submitting test:', error);
+      res.status(500).json({ message: 'Server error' });
+    }
+  });
+  
 // Get test results (existing route remains the same)
 app.get('/api/tests/:testId/results', async (req, res) => {
   try {
