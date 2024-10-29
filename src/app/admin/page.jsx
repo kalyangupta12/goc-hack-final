@@ -55,7 +55,7 @@ export default function Dashboard() {
     if (user) { 
       const fetchTests = async () => {
         try {
-          const response = await axios.get('http://localhost:5000/api/tests', {
+          const response = await axios.get('https://excelitest-api.vercel.app/api/tests', {
             params: { testAdminEmail: user?.primaryEmailAddress?.emailAddress }
           });
   
@@ -68,7 +68,7 @@ export default function Dashboard() {
   
       const fetchUsers = async () => {
         try {
-          const response = await axios.get('http://localhost:5000/api/admin/test-results', {
+          const response = await axios.get('https://excelitest-api.vercel.app/api/admin/test-results', {
             params: { testAdminEmail: user?.primaryEmailAddress?.emailAddress }
           });
           setUsers(response.data.results);
