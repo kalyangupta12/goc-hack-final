@@ -5,9 +5,20 @@ import Logo from "@/assets/logo-w.png";
 import { auth } from "@clerk/nextjs/server";
 import Link from "next/link";
 import { UserButton } from "@clerk/nextjs";
+import { useRouter } from "next/navigation";
 
 export const Header = async () => {
-  const { userId } = await auth();
+  const { userId, redirectToSignIn } = await auth();
+  const router = useRouter();
+
+  const handleProtectedRoute = (e, path) => {
+    if (!userId) {
+      e.preventDefault();
+      router.push("/sign-in");
+    } else {
+      router.push(path);
+    }
+  };
 
   return (
     <header className="py-4 border-b border-white/15 md:border-none sticky top-0 z-10">
@@ -25,17 +36,17 @@ export const Header = async () => {
           </div>
 
           <div className="items-center">
-            <Link href="/attempt-test/testcode">
+            <Link href="/attempt-test/testcode" onClick={(e) => handleProtectedRoute(e, "/attempt-test/testcode")}>
               <Button text="Attend Test" />
             </Link>
           </div>
           <div className="flex gap-4 items-center">
-            <Link href="/upload-handler-3">
+            <Link href="/upload-handler-3" onClick={(e) => handleProtectedRoute(e, "/upload-handler-3")}>
               <Button text="Create Test" />
             </Link>
           </div>
 
-          {/* Conditional rendering for Get Started button or UserButton */}
+          {/* Conditionally render the Get Started button or UserButton */}
           {!userId ? (
             <div className="flex gap-4 items-center">
               <Link href="/sign-in">
@@ -44,7 +55,7 @@ export const Header = async () => {
             </div>
           ) : (
             <div>
-              <User Button />
+              <UserButton />
             </div>
           )}
         </div>
@@ -52,5 +63,3 @@ export const Header = async () => {
     </header>
   );
 };
-
-
