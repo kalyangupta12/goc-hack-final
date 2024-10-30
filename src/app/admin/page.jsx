@@ -55,7 +55,7 @@ export default function Dashboard() {
     if (user) { 
       const fetchTests = async () => {
         try {
-          const response = await axios.get(process.env.API_URL+'/api/tests', {
+          const response = await axios.get(process.env.NEXT_PUBLIC_API_URL+'/api/tests', {
             params: { testAdminEmail: user?.primaryEmailAddress?.emailAddress }
           });
   
@@ -68,7 +68,7 @@ export default function Dashboard() {
   
       const fetchUsers = async () => {
         try {
-          const response = await axios.get(process.env.API_URL+'/api/admin/test-results', {
+          const response = await axios.get(process.env.NEXT_PUBLIC_API_URL+'/api/admin/test-results', {
             params: { testAdminEmail: user?.primaryEmailAddress?.emailAddress }
           });
           setUsers(response.data.results);
