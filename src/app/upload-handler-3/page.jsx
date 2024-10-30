@@ -62,7 +62,7 @@ const CreateTestPage = () => {
     };
   
     try {
-      const response = await axios.post('https://excelitest-api.vercel.app/api/tests', testData);
+      const response = await axios.post(process.env.NEXT_PUBLIC_API_URL+'/api/tests', testData);
       if (response.status === 201) {
         toast.success('Test created successfully!');
         console.log('Test created successfully:', response.data);
