@@ -66,7 +66,7 @@ To set up the project locally:
 
 3. **Configure Environment Variables**:
 
-   - Backend (`/backend`):
+   - Backend (`/backend/.env`):
      ```plaintext
      MONGODB_URI=<your_mongodb_uri>
      FRONTEND_URL=<your_frontend_url>
