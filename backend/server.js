@@ -14,9 +14,24 @@ const PORT = process.env.PORT || 5000;
 // Connect to MongoDB
 connDB();
 
-// Middleware
-app.use(cors());
+// CORS setup
+const corsOptions = {
+  origin: 'https://excelitest.vercel.app', // Restrict to this domain
+  optionsSuccessStatus: 200
+};
+app.use(cors(corsOptions));
+const verifyOrigin = (req, res, next) => {
+  const origin = req.get('origin') || req.get('referer');
+  if (origin && origin.includes('https://excelitest.vercel.app')) {
+    next(); // Proceed if origin matches
+  } else {
+    res.status(403).json({ message: 'Access Forbidden: Unauthorized Origin' });
+  }
+};
+
+//Middlewares
 app.use(express.json());
+app.use('/api', verifyOrigin); // Apply to all /api routes
 
 // Helper function to generate unique test code
 const generateTestCode = () => {
