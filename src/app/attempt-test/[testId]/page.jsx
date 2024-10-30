@@ -19,7 +19,7 @@ const AttemptTest = () => {
   useEffect(() => {
     const fetchTest = async () => {
       try {
-        const response = await axios.get(process.env.API_URL+`/api/tests/${testId}`);
+        const response = await axios.get(process.env.NEXT_PUBLIC_API_URL+`/api/tests/${testId}`);
         setTest(response.data.test);
         // Set initial time based on test duration (assuming duration is in minutes)
         if (response.data.test.testAccessPeriod) {
@@ -78,7 +78,7 @@ const AttemptTest = () => {
         formattedAnswers[index] = answers[index].replace('Option', '');
       });
   
-      const response = await axios.post(`https://excelitest-api.vercel.app/api/tests/${testId}/submit`, { 
+      const response = await axios.post(process.env.NEXT_PUBLIC_API_URL+`/api/tests/${testId}/submit`, { 
         answers: formattedAnswers, 
         userId: user?.primaryEmailAddress?.emailAddress
       });
