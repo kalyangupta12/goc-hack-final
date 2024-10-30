@@ -6,7 +6,7 @@
 
 ## 🚀 Live Demo
 
-[*Launch Excelitest*](https://excelitest.vercel.app) *(Replace with actual link)*
+[*Launch Excelitest*](https://excelitest.vercel.app)
 
 ---
 
