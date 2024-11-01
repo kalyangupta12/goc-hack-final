@@ -2,7 +2,7 @@
 import { useUser } from '@clerk/nextjs';
 import React, { useState } from 'react';
 import * as XLSX from 'xlsx';
-import { ToastContainer, toast } from 'react-toastify';
+import toast, {Toaster} from 'react-hot-toast'
 import { TestShareCard } from '@/sections/TestShareCard';
 import 'react-toastify/dist/ReactToastify.css';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
@@ -83,6 +83,10 @@ const CreateTestPage = () => {
 
   return (
     <div className="min-h-screen w-full bg-gradient-to-br from-purple-950 via-gray-900 to-black p-10 font-poppins">
+      <Toaster
+      position="top-center"
+      reverseOrder={false}
+    />
       <div className='flex items-center justify-between mb-8'>
         <Link href="/admin">
           <Button variant="ghost" className="text-purple-300 hover:text-purple-200 hover:bg-purple-900/20">
@@ -244,7 +248,6 @@ const CreateTestPage = () => {
           </Droppable>
         </DragDropContext>
       </div>
-      <ToastContainer theme="dark" />
     </div>
   );
 };
