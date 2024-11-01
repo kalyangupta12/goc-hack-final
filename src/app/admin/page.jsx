@@ -1,5 +1,5 @@
 "use client"
-import { UserButton, useUser } from "@clerk/nextjs"
+import { UserButton, UserProfile, useUser } from "@clerk/nextjs"
 import { useEffect, useState } from "react"
 import {
   Bell,
@@ -38,67 +38,76 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
-import { Separator } from "@/components/ui/separator";
-import axios from 'axios';
+import { Separator } from "@/components/ui/separator"
+import axios from "axios"
 import Link from "next/link"
+import { shadesOfPurple } from "@clerk/themes"
 
 export default function Dashboard() {
-  const [searchTerm, setSearchTerm] = useState("");
-  const [searchTests, setSearchTests] = useState("");
-  const [users, setUsers] = useState([]);
-  const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [tests, setTests] = useState([]);
-  const { user } = useUser();
+  const [searchTerm, setSearchTerm] = useState("")
+  const [searchTests, setSearchTests] = useState("")
+  const [users, setUsers] = useState([])
+  const [sidebarOpen, setSidebarOpen] = useState(false)
+  const [tests, setTests] = useState([])
+  const { user } = useUser()
 
-  
   useEffect(() => {
-    if (user) { 
+    if (user) {
       const fetchTests = async () => {
         try {
-          const response = await axios.get(process.env.NEXT_PUBLIC_API_URL+'/api/tests', {
-            params: { testAdminEmail: user?.primaryEmailAddress?.emailAddress }
-          });
-  
-          setTests(response.data.tests);
-          console.log('Fetched tests:', response.data.tests); // Log the fetched tests directly
+          const response = await axios.get(
+            process.env.NEXT_PUBLIC_API_URL + "/api/tests",
+            {
+              params: {
+                testAdminEmail: user?.primaryEmailAddress?.emailAddress,
+              },
+            }
+          )
+
+          setTests(response.data.tests)
+          console.log("Fetched tests:", response.data.tests) // Log the fetched tests directly
         } catch (error) {
-          console.error('Error fetching tests:', error);
+          console.error("Error fetching tests:", error)
         }
-      };
-  
+      }
+
       const fetchUsers = async () => {
         try {
-          const response = await axios.get(process.env.NEXT_PUBLIC_API_URL+'/api/admin/test-results', {
-            params: { testAdminEmail: user?.primaryEmailAddress?.emailAddress }
-          });
-          setUsers(response.data.results);
-          console.log('Fetched users:', response.data.results); // Log the fetched users
+          const response = await axios.get(
+            process.env.NEXT_PUBLIC_API_URL + "/api/admin/test-results",
+            {
+              params: {
+                testAdminEmail: user?.primaryEmailAddress?.emailAddress,
+              },
+            }
+          )
+          setUsers(response.data.results)
+          console.log("Fetched users:", response.data.results) // Log the fetched users
         } catch (error) {
-          console.error('Error fetching data', error);
+          console.error("Error fetching data", error)
         }
-      };
-  
-      fetchTests(); // Call fetchTests
-      fetchUsers(); // Call fetchUsers
-    }
-  }, [user]);
+      }
 
-  const filteredUsers = users.filter((e) =>
-    (e.testName?.toLowerCase().includes(searchTerm?.toLowerCase() || "") ||
-     e.StudentEmail?.toLowerCase().includes(searchTerm?.toLowerCase() || ""))
-  );
-  
+      fetchTests() // Call fetchTests
+      fetchUsers() // Call fetchUsers
+    }
+  }, [user])
+
+  const filteredUsers = users.filter(
+    (e) =>
+      e.testName?.toLowerCase().includes(searchTerm?.toLowerCase() || "") ||
+      e.StudentEmail?.toLowerCase().includes(searchTerm?.toLowerCase() || "")
+  )
 
   const filteredTests = tests.filter((e) =>
     e.testName.toLowerCase().includes(searchTests.toLowerCase())
-  );
-
+  )
 
   return (
-    <div className="flex h-screen bg-zinc-900 text-gray-100">
+    <div className="flex h-screen bg-gradient-to-br from-purple-950 via-gray-900 to-black">
       {/* Sidebar - hidden on mobile, shown on larger screens */}
       <div
-        className={`fixed inset-y-0 left-0 z-50 w-64 bg-gray-800 shadow-md transform ${
+        className={`fixed inset-y-0 left-0 z-50 w-64 bg-[#1F133C] shadow-md transform ${
           sidebarOpen ? "translate-x-0" : "-translate-x-full"
         } lg:relative lg:translate-x-0 transition-transform duration-300 ease-in-out`}
       >
@@ -113,23 +122,20 @@ export default function Dashboard() {
             <X className="h-6 w-6" />
           </Button>
         </div>
-        <nav className="p-4">
-          <ul className="space-y-2">
-            <li>
-              <Button variant="ghost" className="w-full justify-start">
-                <Users className="mr-2 h-4 w-4" />
-                Students
-              </Button>
-            </li>
-           
-          </ul>
-        </nav>
+
+        {/* <div className="flex justify-center">
+                  <UserProfile appearance={{ baseTheme: shadesOfPurple }} />
+                </div> */}
+        
+          <Button>Users</Button>
+          <Button>Testsy</Button>
+       
       </div>
 
       {/* Main content area */}
       <div className="flex-1 flex flex-col overflow-hidden">
         {/* Header */}
-        <header className="bg-gray-800 shadow-sm">
+        <header className="bg-[#1F133C] shadow-sm">
           <div className="flex items-center justify-between px-4 py-4">
             <div className="flex items-center">
               <Button
@@ -148,19 +154,17 @@ export default function Dashboard() {
         </header>
 
         {/* Main content with tabs */}
-        <main className="flex-1 overflow-x-hidden overflow-y-auto bg-gray-900">
+        <main className="flex-1  backdrop-blur-xl bg-gray-900/40 p-8 m-10 rounded-2xl shadow-2xl border border-purple-500/10 mb-6 overflow-x-hidden overflow-y-auto bg-gradient-to-br from-purple-950 via-gray-900 to-black        ">
           <div className="container mx-auto px-4 py-6">
-            <Tabs defaultValue="Users" className="space-y-4">
+            <Tabs defaultValue="tests" className="space-y-4">
               <TabsList className="grid w-full grid-cols-2">
                 <TabsTrigger value="users">Users</TabsTrigger>
                 <TabsTrigger value="tests">Tests</TabsTrigger>
               </TabsList>
 
-             
-
               {/* Users tab content */}
               <TabsContent value="users" className="space-y-4 ">
-                <Card className="bg-gray-100">
+                <Card className="bg-[]">
                   <CardHeader>
                     <CardTitle>Manage Users</CardTitle>
                     <CardDescription>
@@ -176,7 +180,6 @@ export default function Dashboard() {
                         onChange={(e) => setSearchTerm(e.target.value)}
                         className="md:max-w-sm"
                       />
-                     
                     </div>
                     {/* Users table */}
                     <div className="overflow-x-auto">
@@ -243,9 +246,9 @@ export default function Dashboard() {
                         onChange={(e) => setSearchTests(e.target.value)}
                       />
                       <Link href={"/upload-handler-3"}>
-                      <Button className="md:w-auto">
-                        <Plus className="mr-2 h-4 w-4" /> Create New Test
-                      </Button>
+                        <Button className="md:w-auto">
+                          <Plus className="mr-2 h-4 w-4" /> Create New Test
+                        </Button>
                       </Link>
                     </div>
                     {/* Tests table */}
@@ -282,16 +285,16 @@ export default function Dashboard() {
                                 <Button variant="ghost" size="sm">
                                   Delete
                                 </Button> */}
-                                
+
                                 <Link href={`/attempt-test/${test._id}`}>
-              <Button
-                variant="ghost"
-                size="sm"
-                className="hidden md:inline-flex"
-              >
-                View
-              </Button>
-            </Link>
+                                  <Button
+                                    variant="ghost"
+                                    size="sm"
+                                    className="hidden md:inline-flex"
+                                  >
+                                    View
+                                  </Button>
+                                </Link>
                               </TableCell>
                             </TableRow>
                           ))}
@@ -301,9 +304,6 @@ export default function Dashboard() {
                   </CardContent>
                 </Card>
               </TabsContent>
-
-           
-            
             </Tabs>
           </div>
         </main>
