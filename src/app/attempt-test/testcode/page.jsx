@@ -6,7 +6,7 @@ import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { toast } from 'react-toastify';
+import toast, {Toaster} from 'react-hot-toast'
 import { useUser } from '@clerk/nextjs'
   const TestCodeEntry = () => {
   const [code, setCode] = useState('');
@@ -35,6 +35,10 @@ import { useUser } from '@clerk/nextjs'
     <div className="min-h-screen bg-black flex items-center justify-center p-4 text-black"  style={{
       backgroundImage: `url(${starsBg.src})`,
     }}>
+      <Toaster
+      position="top-center"
+      reverseOrder={false}
+    />
       <div className="max-w-md w-full bg-zinc-200 rounded-lg shadow-md p-8">
         <h1 className="text-2xl font-bold text-center mb-6">Enter Test Code</h1>
         

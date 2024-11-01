@@ -2,7 +2,7 @@
 import { useUser } from "@clerk/nextjs"
 import React, { useState } from "react"
 import * as XLSX from "xlsx"
-import { ToastContainer, toast } from "react-toastify"
+import toast, {Toaster} from 'react-hot-toast'
 import { TestShareCard } from "@/sections/TestShareCard"
 import "react-toastify/dist/ReactToastify.css"
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd"
@@ -109,6 +109,10 @@ const CreateTestPage = () => {
   return (
     <div className="min-h-screen w-full bg-gradient-to-br from-purple-950 via-gray-900 to-black p-10 font-poppins">
       <div className="flex items-center justify-between mb-8">
+      <Toaster
+      position="top-center"
+      reverseOrder={false}
+    />
         <Link href="/admin">
           <Button
             variant="ghost"
@@ -304,7 +308,6 @@ const CreateTestPage = () => {
         </DragDropContext>
       </div>
 
-      <ToastContainer theme="dark" />
     </div>
   )
 }
