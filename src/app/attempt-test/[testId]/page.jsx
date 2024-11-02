@@ -4,7 +4,7 @@ import starsBg from "@/assets/stars.png"
 import { useState, useEffect } from "react"
 import { useParams } from "next/navigation"
 import axios from "axios"
-import { toast } from "react-hot-toast"
+import toast, {Toaster} from 'react-hot-toast'
 import { useUser } from "@clerk/nextjs"
 
 const AttemptTest = () => {
@@ -119,6 +119,10 @@ const AttemptTest = () => {
         backgroundImage: `url(${starsBg.src})`,
       }}
     >
+      <Toaster
+      position="top-center"
+      reverseOrder={false}
+    />
       <div className="bg-zinc-200 rounded-lg shadow-md mb-8">
         <div className="p-6">
           <div className="flex justify-between items-center mb-6">
