@@ -65,6 +65,10 @@ const AttemptTest = () => {
   const handleSubmit = async (e) => {
     e.preventDefault()
 
+    if(!e){
+      toast.error("Please attempt the test!");
+      return 
+    }
     // Check if time is up
     if (timeLeft <= 0) {
       toast.error("Time is up! You cannot submit the test.") // Show toast if time is up
@@ -87,7 +91,7 @@ const AttemptTest = () => {
           userId: user?.primaryEmailAddress?.emailAddress,
         }
       )
-
+    
       toast.success(
         `Test submitted successfully! Score: ${response.data.score}`
       )
@@ -97,7 +101,6 @@ const AttemptTest = () => {
       // Navigate to results page
       window.location.href = `/test-results/${testId}`
     } catch (error) {
-      console.error("Error submitting test:", error)
       toast.error("Error submitting test. Please try again.")
     } finally {
       setIsSubmitting(false)
