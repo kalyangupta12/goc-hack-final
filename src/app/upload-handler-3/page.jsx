@@ -115,8 +115,6 @@ const CreateTestPage = () => {
 
   return (
     <div className="min-h-screen w-full bg-gradient-to-br from-purple-950 via-gray-900 to-black p-10 font-poppins">
-      <Toaster position="top-center" reverseOrder={false} />
-
       <div className="flex items-center justify-between mb-8">
       <Toaster
       position="top-center"
