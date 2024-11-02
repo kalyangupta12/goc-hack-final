@@ -1,7 +1,17 @@
 "use client"
+import { useRouter } from "next/navigation"
 import { UserButton, useUser } from "@clerk/nextjs"
 import { useEffect, useState } from "react"
-import { Menu, Plus, X } from "lucide-react"
+import {
+  Bell,
+  LogOut,
+  Menu,
+  Plus,
+  Search,
+  Settings,
+  Users,
+  X,
+} from "lucide-react"
 import { Button } from "@/components/ui/button"
 import {
   Card,
@@ -29,7 +39,9 @@ export default function Dashboard() {
   const [users, setUsers] = useState([])
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const [tests, setTests] = useState([])
+  const [activeTab, setActiveTab] = useState("users")
   const { user } = useUser()
+  const router = useRouter()
 
   useEffect(() => {
     if (user) {
@@ -44,6 +56,7 @@ export default function Dashboard() {
             }
           )
           setTests(response.data.tests)
+          console.log("Fetched tests:", response.data.tests)
         } catch (error) {
           console.error("Error fetching tests:", error)
         }
@@ -60,6 +73,7 @@ export default function Dashboard() {
             }
           )
           setUsers(response.data.results)
+          console.log("Fetched users:", response.data.results)
         } catch (error) {
           console.error("Error fetching data", error)
         }
@@ -79,49 +93,56 @@ export default function Dashboard() {
   const filteredTests = tests.filter((e) =>
     e.testName.toLowerCase().includes(searchTests.toLowerCase())
   )
+
   return (
-    <div className="flex h-screen bg-gradient-to-br from-[#1f133c] to-[#2a1f4d]">
+    <div className="flex h-screen bg-gray-900 text-white">
       {/* Sidebar */}
       <div
-        className={`fixed inset-y-0 left-0 z-50 w-64 bg-[#2a1f4d] shadow-lg transform ${
+        className={`fixed inset-y-0 left-0 z-50 w-64 bg-gray-800 shadow-md transform ${
           sidebarOpen ? "translate-x-0" : "-translate-x-full"
         } lg:relative lg:translate-x-0 transition-transform duration-300 ease-in-out`}
       >
         <div className="flex items-center justify-between p-4 border-b border-gray-700">
-          <h1 className="text-2xl font-bold text-white">Admin Dashboard</h1>
+          <h1 className="text-lg font-semibold text-purple-400">
+            Admin Dashboard
+          </h1>
           <Button
             variant="ghost"
             size="icon"
             onClick={() => setSidebarOpen(false)}
             className="lg:hidden"
           >
-            <X className="h-6 w-6 text-white" />
+            <X className="h-5 w-5 text-white" />
           </Button>
         </div>
-
-        <div className="flex flex-col gap-4 mt-4">
+        <div className="flex flex-col gap-2 mt-4">
           <Button
-            value="users"
-            onClick={() => document.getElementById("usersTab").click()}
-            className="mx-2 py-2 h-12 bg-purple-600 hover:bg-purple-800 text-white font-semibold rounded-lg shadow-md"
+            onClick={() => setActiveTab("users")}
+            className="mx-2 py-2 bg-purple-600 text-white hover:bg-purple-700 rounded-md"
           >
             Users
           </Button>
           <Button
-            value="tests"
-            onClick={() => document.getElementById("testsTab").click()}
-            className="mx-2 py-2 h-12 bg-purple-600 hover:bg-purple-800 text-white font-semibold rounded-lg shadow-md"
+            onClick={() => setActiveTab("tests")}
+            className="mx-2 py-2 bg-purple-600 text-white hover:bg-purple-700 rounded-md"
           >
             Tests
+          </Button>
+          <Button
+            onClick={() => {
+              router.push("/")
+            }}
+            className="mx-2 py-2 bg-purple-600 text-white hover:bg-purple-700 rounded-md"
+          >
+            Home
           </Button>
         </div>
       </div>
 
       {/* Main content */}
-      <div className="flex-1 flex flex-col overflow-hidden">
-        {/* Header */}
-        <header className="bg-[#2a1f4d] shadow-md">
-          <div className="flex items-center justify-between px-4 py-4">
+      <div className="flex-1 flex flex-col">
+        <header className="bg-gray-800 shadow-md border-b border-gray-700">
+          <div className="flex items-center justify-between px-4 py-3">
             <div className="flex items-center">
               <Button
                 variant="ghost"
@@ -129,32 +150,39 @@ export default function Dashboard() {
                 onClick={() => setSidebarOpen(true)}
                 className="mr-2 lg:hidden"
               >
-                <Menu className="h-6 w-6 text-white" />
+                <Menu className="h-5 w-5 text-white" />
               </Button>
-              <h2 className="text-xl font-bold text-white">Dashboard</h2>
+              <h2 className="text-lg font-semibold text-purple-400">
+                Dashboard
+              </h2>
             </div>
             <UserButton />
           </div>
         </header>
-
         {/* Main content with tabs */}
-        <main className="flex-1 p-8 ounded-2xl shadow-2xl">
-          <Tabs defaultValue="tests" className="space-y-4">
-            <TabsList className="grid w-full grid-cols-2 bg-white bg-opacity-20 rounded-lg">
-              <TabsTrigger id="usersTab" value="users" className="text-white">
+        <main className="flex-1 p-6 bg-gray-900 text-white">
+          <Tabs
+            value={activeTab}
+            onValueChange={setActiveTab}
+            className="space-y-4"
+          >
+            <TabsList className="grid grid-cols-2 bg-gray-800 border border-gray-700">
+              <TabsTrigger value="users" className="text-purple-400">
                 Users
               </TabsTrigger>
-              <TabsTrigger id="testsTab" value="tests" className="text-white">
+              <TabsTrigger value="tests" className="text-purple-400">
                 Tests
               </TabsTrigger>
             </TabsList>
 
-            {/* Users tab */}
+            {/* Users tab content */}
             <TabsContent value="users" className="space-y-4">
-              <Card className="bg-[#312354] bg-opacity-80 rounded-lg shadow-lg">
+              <Card className="border border-gray-700 shadow-md rounded-lg bg-gray-800">
                 <CardHeader>
-                  <CardTitle className="text-white">Manage Users</CardTitle>
-                  <CardDescription className="text-gray-300">
+                  <CardTitle className="text-purple-400">
+                    Manage Users
+                  </CardTitle>
+                  <CardDescription className="text-gray-400">
                     View and manage user accounts
                   </CardDescription>
                 </CardHeader>
@@ -164,29 +192,34 @@ export default function Dashboard() {
                       placeholder="Search users..."
                       value={searchTerm}
                       onChange={(e) => setSearchTerm(e.target.value)}
-                      className="md:max-w-sm"
+                      className="md:max-w-sm border border-gray-600 bg-gray-700 text-white rounded-md"
                     />
                   </div>
                   <div className="overflow-x-auto">
-                    <Table>
+                    <Table className="min-w-full border border-gray-700 bg-gray-800">
                       <TableHeader>
                         <TableRow>
-                          <TableHead className="text-white">
+                          <TableHead className="text-purple-400">
                             Test Name
                           </TableHead>
-                          <TableHead className="text-white">Students</TableHead>
-                          <TableHead className="hidden md:table-cell text-white">
+                          <TableHead className="text-purple-400">
+                            Students
+                          </TableHead>
+                          <TableHead className="text-purple-400 hidden md:table-cell">
                             Score
                           </TableHead>
-                          <TableHead className="hidden md:table-cell text-white">
+                          <TableHead className="text-purple-400 hidden md:table-cell">
                             Attempted At
                           </TableHead>
                         </TableRow>
                       </TableHeader>
                       <TableBody>
                         {filteredUsers.map((user) => (
-                          <TableRow key={user.resultId}>
-                            <TableCell className="text-gray-300">
+                          <TableRow
+                            key={user.resultId}
+                            className="hover:bg-gray-700"
+                          >
+                            <TableCell className="text-white">
                               {user.testName}
                             </TableCell>
                             <TableCell className="text-gray-300">
@@ -207,12 +240,14 @@ export default function Dashboard() {
               </Card>
             </TabsContent>
 
-            {/* Tests tab */}
+            {/* Tests tab content */}
             <TabsContent value="tests" className="space-y-4">
-              <Card className="bg-[#312354] bg-opacity-80 rounded-lg shadow-lg">
+              <Card className="border border-gray-700 shadow-md rounded-lg bg-gray-800">
                 <CardHeader>
-                  <CardTitle className="text-white">Manage Tests</CardTitle>
-                  <CardDescription className="text-gray-300">
+                  <CardTitle className="text-purple-400">
+                    Manage Tests
+                  </CardTitle>
+                  <CardDescription className="text-gray-400">
                     View and manage created tests
                   </CardDescription>
                 </CardHeader>
@@ -222,33 +257,42 @@ export default function Dashboard() {
                       placeholder="Search tests..."
                       value={searchTests}
                       onChange={(e) => setSearchTests(e.target.value)}
-                      className="md:max-w-sm"
+                      className="md:max-w-sm border border-gray-600 bg-gray-700 text-white rounded-md"
                     />
                     <Link href={"/upload-handler-3"}>
-                      <Button className="bg-purple-600 hover:bg-purple-800 text-white rounded-lg shadow-md">
+                      <Button className="bg-purple-600 text-white hover:bg-purple-700 rounded-md">
                         <Plus className="mr-2 h-4 w-4" /> Create New Test
                       </Button>
                     </Link>
                   </div>
                   <div className="overflow-x-auto">
-                    <Table>
+                    <Table className="min-w-full border border-gray-700 bg-gray-800">
                       <TableHeader>
                         <TableRow>
-                          <TableHead className="text-white">
+                          <TableHead className="text-purple-400">
                             Test Name
                           </TableHead>
-                          <TableHead className="text-white">Actions</TableHead>
+                          <TableHead className="text-purple-400">
+                            Actions
+                          </TableHead>
                         </TableRow>
                       </TableHeader>
                       <TableBody>
                         {filteredTests.map((test) => (
-                          <TableRow key={test.testId}>
-                            <TableCell className="text-gray-300">
+                          <TableRow
+                            key={test._id}
+                            className="hover:bg-gray-700"
+                          >
+                            <TableCell className="text-white">
                               {test.testName}
                             </TableCell>
-                            <TableCell className="text-gray-300">
+                            <TableCell>
                               <Link href={`/attempt-test/${test._id}`}>
-                                <Button className="bg-blue-600 hover:bg-blue-800 text-white">
+                                <Button
+                                  variant="ghost"
+                                  size="sm"
+                                  className="text-purple-400 hover:text-purple-300"
+                                >
                                   View
                                 </Button>
                               </Link>
