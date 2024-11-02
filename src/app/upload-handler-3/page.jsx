@@ -2,8 +2,14 @@
 import { useUser } from "@clerk/nextjs"
 import React, { useState } from "react"
 import * as XLSX from "xlsx"
+
+//import { ToastContainer, toast } from "react-toastify"
+
+
 import toast, {Toaster} from 'react-hot-toast'
+
 import { TestShareCard } from "@/sections/TestShareCard"
+import toast from "react-hot-toast"
 import "react-toastify/dist/ReactToastify.css"
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd"
 import { useForm, useFieldArray } from "react-hook-form"
@@ -12,6 +18,7 @@ import { Button } from "@/components/ui/button"
 import Link from "next/link"
 import { AlignLeftIcon } from "@radix-ui/react-icons"
 import { IconArrowLeftToArc } from "@tabler/icons-react"
+import { ToastNotification } from "@/components/toastnotifivation"
 const CreateTestPage = () => {
   const [testLink, setTestLink] = useState("")
   const [testCode, setTestCode] = useState("")
@@ -86,7 +93,7 @@ const CreateTestPage = () => {
         testData
       )
       if (response.status === 201) {
-        toast.success("Test created successfully!")
+        toast.custom(<ToastNotification />)
         setTestCode(response.data.code)
         setTestLink(response.data.link)
       } else {
@@ -108,6 +115,8 @@ const CreateTestPage = () => {
 
   return (
     <div className="min-h-screen w-full bg-gradient-to-br from-purple-950 via-gray-900 to-black p-10 font-poppins">
+      <Toaster position="top-center" reverseOrder={false} />
+
       <div className="flex items-center justify-between mb-8">
       <Toaster
       position="top-center"

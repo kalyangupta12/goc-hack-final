@@ -1,17 +1,7 @@
 "use client"
-import { UserButton, UserProfile, useUser } from "@clerk/nextjs"
+import { UserButton, useUser } from "@clerk/nextjs"
 import { useEffect, useState } from "react"
-import {
-  Bell,
-  LogOut,
-  Menu,
-  Plus,
-  Search,
-  Settings,
-  Users,
-  X,
-} from "lucide-react"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { Menu, Plus, X } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import {
   Card,
@@ -23,14 +13,6 @@ import {
 import { Input } from "@/components/ui/input"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-import {
   Table,
   TableBody,
   TableCell,
@@ -38,10 +20,8 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
-import { Separator } from "@/components/ui/separator"
 import axios from "axios"
 import Link from "next/link"
-import { shadesOfPurple } from "@clerk/themes"
 
 export default function Dashboard() {
   const [searchTerm, setSearchTerm] = useState("")
@@ -63,9 +43,7 @@ export default function Dashboard() {
               },
             }
           )
-
           setTests(response.data.tests)
-          console.log("Fetched tests:", response.data.tests) // Log the fetched tests directly
         } catch (error) {
           console.error("Error fetching tests:", error)
         }
@@ -82,14 +60,13 @@ export default function Dashboard() {
             }
           )
           setUsers(response.data.results)
-          console.log("Fetched users:", response.data.results) // Log the fetched users
         } catch (error) {
           console.error("Error fetching data", error)
         }
       }
 
-      fetchTests() // Call fetchTests
-      fetchUsers() // Call fetchUsers
+      fetchTests()
+      fetchUsers()
     }
   }, [user])
 
@@ -102,40 +79,48 @@ export default function Dashboard() {
   const filteredTests = tests.filter((e) =>
     e.testName.toLowerCase().includes(searchTests.toLowerCase())
   )
-
   return (
-    <div className="flex h-screen bg-gradient-to-br from-purple-950 via-gray-900 to-black">
-      {/* Sidebar - hidden on mobile, shown on larger screens */}
+    <div className="flex h-screen bg-gradient-to-br from-[#1f133c] to-[#2a1f4d]">
+      {/* Sidebar */}
       <div
-        className={`fixed inset-y-0 left-0 z-50 w-64 bg-[#1F133C] shadow-md transform ${
+        className={`fixed inset-y-0 left-0 z-50 w-64 bg-[#2a1f4d] shadow-lg transform ${
           sidebarOpen ? "translate-x-0" : "-translate-x-full"
         } lg:relative lg:translate-x-0 transition-transform duration-300 ease-in-out`}
       >
         <div className="flex items-center justify-between p-4 border-b border-gray-700">
-          <h1 className="text-xl font-bold">Admin Dashboard</h1>
+          <h1 className="text-2xl font-bold text-white">Admin Dashboard</h1>
           <Button
             variant="ghost"
             size="icon"
             onClick={() => setSidebarOpen(false)}
             className="lg:hidden"
           >
-            <X className="h-6 w-6" />
+            <X className="h-6 w-6 text-white" />
           </Button>
         </div>
 
-        {/* <div className="flex justify-center">
-                  <UserProfile appearance={{ baseTheme: shadesOfPurple }} />
-                </div> */}
-        
-          <Button>Users</Button>
-          <Button>Testsy</Button>
-       
+        <div className="flex flex-col gap-4 mt-4">
+          <Button
+            value="users"
+            onClick={() => document.getElementById("usersTab").click()}
+            className="mx-2 py-2 h-12 bg-purple-600 hover:bg-purple-800 text-white font-semibold rounded-lg shadow-md"
+          >
+            Users
+          </Button>
+          <Button
+            value="tests"
+            onClick={() => document.getElementById("testsTab").click()}
+            className="mx-2 py-2 h-12 bg-purple-600 hover:bg-purple-800 text-white font-semibold rounded-lg shadow-md"
+          >
+            Tests
+          </Button>
+        </div>
       </div>
 
-      {/* Main content area */}
+      {/* Main content */}
       <div className="flex-1 flex flex-col overflow-hidden">
         {/* Header */}
-        <header className="bg-[#1F133C] shadow-sm">
+        <header className="bg-[#2a1f4d] shadow-md">
           <div className="flex items-center justify-between px-4 py-4">
             <div className="flex items-center">
               <Button
@@ -144,168 +129,139 @@ export default function Dashboard() {
                 onClick={() => setSidebarOpen(true)}
                 className="mr-2 lg:hidden"
               >
-                <Menu className="h-6 w-6" />
+                <Menu className="h-6 w-6 text-white" />
               </Button>
-              <h2 className="text-xl font-bold">Dashboard</h2>
+              <h2 className="text-xl font-bold text-white">Dashboard</h2>
             </div>
-
             <UserButton />
           </div>
         </header>
 
         {/* Main content with tabs */}
-        <main className="flex-1  backdrop-blur-xl bg-gray-900/40 p-8 m-10 rounded-2xl shadow-2xl border border-purple-500/10 mb-6 overflow-x-hidden overflow-y-auto bg-gradient-to-br from-purple-950 via-gray-900 to-black        ">
-          <div className="container mx-auto px-4 py-6">
-            <Tabs defaultValue="tests" className="space-y-4">
-              <TabsList className="grid w-full grid-cols-2">
-                <TabsTrigger value="users">Users</TabsTrigger>
-                <TabsTrigger value="tests">Tests</TabsTrigger>
-              </TabsList>
+        <main className="flex-1 p-8 ounded-2xl shadow-2xl">
+          <Tabs defaultValue="tests" className="space-y-4">
+            <TabsList className="grid w-full grid-cols-2 bg-white bg-opacity-20 rounded-lg">
+              <TabsTrigger id="usersTab" value="users" className="text-white">
+                Users
+              </TabsTrigger>
+              <TabsTrigger id="testsTab" value="tests" className="text-white">
+                Tests
+              </TabsTrigger>
+            </TabsList>
 
-              {/* Users tab content */}
-              <TabsContent value="users" className="space-y-4 ">
-                <Card className="bg-[]">
-                  <CardHeader>
-                    <CardTitle>Manage Users</CardTitle>
-                    <CardDescription>
-                      View and manage user accounts
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    {/* User search and add user button */}
-                    <div className="flex flex-col space-y-4 md:flex-row md:space-y-0 md:space-x-4 mb-4">
-                      <Input
-                        placeholder="Search users..."
-                        value={searchTerm}
-                        onChange={(e) => setSearchTerm(e.target.value)}
-                        className="md:max-w-sm"
-                      />
-                    </div>
-                    {/* Users table */}
-                    <div className="overflow-x-auto">
-                      <Table>
-                        <TableHeader>
-                          <TableRow>
-                            <TableHead>Test Name</TableHead>
-                            <TableHead>Students</TableHead>
-                            <TableHead className="hidden md:table-cell">
-                              Score
-                            </TableHead>
-                            <TableHead className="hidden md:table-cell">
-                              Attempted At
-                            </TableHead>
-                            {/* <TableHead>Actions</TableHead> */}
+            {/* Users tab */}
+            <TabsContent value="users" className="space-y-4">
+              <Card className="bg-[#312354] bg-opacity-80 rounded-lg shadow-lg">
+                <CardHeader>
+                  <CardTitle className="text-white">Manage Users</CardTitle>
+                  <CardDescription className="text-gray-300">
+                    View and manage user accounts
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="flex flex-col space-y-4 md:flex-row md:space-y-0 md:space-x-4 mb-4">
+                    <Input
+                      placeholder="Search users..."
+                      value={searchTerm}
+                      onChange={(e) => setSearchTerm(e.target.value)}
+                      className="md:max-w-sm"
+                    />
+                  </div>
+                  <div className="overflow-x-auto">
+                    <Table>
+                      <TableHeader>
+                        <TableRow>
+                          <TableHead className="text-white">
+                            Test Name
+                          </TableHead>
+                          <TableHead className="text-white">Students</TableHead>
+                          <TableHead className="hidden md:table-cell text-white">
+                            Score
+                          </TableHead>
+                          <TableHead className="hidden md:table-cell text-white">
+                            Attempted At
+                          </TableHead>
+                        </TableRow>
+                      </TableHeader>
+                      <TableBody>
+                        {filteredUsers.map((user) => (
+                          <TableRow key={user.resultId}>
+                            <TableCell className="text-gray-300">
+                              {user.testName}
+                            </TableCell>
+                            <TableCell className="text-gray-300">
+                              {user.studentEmail}
+                            </TableCell>
+                            <TableCell className="hidden md:table-cell text-gray-300">
+                              {user.score}
+                            </TableCell>
+                            <TableCell className="hidden md:table-cell text-gray-300">
+                              {user.submittedAt}
+                            </TableCell>
                           </TableRow>
-                        </TableHeader>
-                        <TableBody>
-                          {filteredUsers.map((user) => (
-                            <TableRow key={user.resultId}>
-                              <TableCell className="font-medium">
-                                {user.testName}
-                              </TableCell>
-                              <TableCell>{user.studentEmail}</TableCell>
-                              <TableCell className="hidden md:table-cell">
-                                {user.score}
-                              </TableCell>
-                              <TableCell className="hidden md:table-cell">
-                                {user.submittedAt}
-                              </TableCell>
-                              {/* <TableCell>
-                                <Button variant="ghost" size="sm">
+                        ))}
+                      </TableBody>
+                    </Table>
+                  </div>
+                </CardContent>
+              </Card>
+            </TabsContent>
+
+            {/* Tests tab */}
+            <TabsContent value="tests" className="space-y-4">
+              <Card className="bg-[#312354] bg-opacity-80 rounded-lg shadow-lg">
+                <CardHeader>
+                  <CardTitle className="text-white">Manage Tests</CardTitle>
+                  <CardDescription className="text-gray-300">
+                    View and manage created tests
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="flex flex-col space-y-4 md:flex-row md:space-y-0 md:space-x-4 mb-4">
+                    <Input
+                      placeholder="Search tests..."
+                      value={searchTests}
+                      onChange={(e) => setSearchTests(e.target.value)}
+                      className="md:max-w-sm"
+                    />
+                    <Link href={"/upload-handler-3"}>
+                      <Button className="bg-purple-600 hover:bg-purple-800 text-white rounded-lg shadow-md">
+                        <Plus className="mr-2 h-4 w-4" /> Create New Test
+                      </Button>
+                    </Link>
+                  </div>
+                  <div className="overflow-x-auto">
+                    <Table>
+                      <TableHeader>
+                        <TableRow>
+                          <TableHead className="text-white">
+                            Test Name
+                          </TableHead>
+                          <TableHead className="text-white">Actions</TableHead>
+                        </TableRow>
+                      </TableHeader>
+                      <TableBody>
+                        {filteredTests.map((test) => (
+                          <TableRow key={test.testId}>
+                            <TableCell className="text-gray-300">
+                              {test.testName}
+                            </TableCell>
+                            <TableCell className="text-gray-300">
+                              <Link href={`/attempt-test/${test._id}`}>
+                                <Button className="bg-blue-600 hover:bg-blue-800 text-white">
                                   View
                                 </Button>
-                                <Button variant="ghost" size="sm">
-                                  Delete
-                                </Button>
-                              </TableCell> */}
-                            </TableRow>
-                          ))}
-                        </TableBody>
-                      </Table>
-                    </div>
-                  </CardContent>
-                </Card>
-              </TabsContent>
-
-              {/* Tests tab content */}
-              <TabsContent value="tests" className="space-y-4">
-                <Card>
-                  <CardHeader>
-                    <CardTitle>Manage Tests</CardTitle>
-                    <CardDescription>
-                      View and manage created tests
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    {/* Test search and create new test button */}
-                    <div className="flex flex-col space-y-4 md:flex-row md:space-y-0 md:space-x-4 mb-4">
-                      <Input
-                        placeholder="Search tests..."
-                        className="md:max-w-sm"
-                        value={searchTests}
-                        onChange={(e) => setSearchTests(e.target.value)}
-                      />
-                      <Link href={"/upload-handler-3"}>
-                        <Button className="md:w-auto">
-                          <Plus className="mr-2 h-4 w-4" /> Create New Test
-                        </Button>
-                      </Link>
-                    </div>
-                    {/* Tests table */}
-                    <div className="overflow-x-auto">
-                      <Table>
-                        <TableHeader>
-                          <TableRow>
-                            <TableHead>Test Name</TableHead>
-                            {/* <TableHead className="hidden md:table-cell">
-                              Created By
-                            </TableHead>
-                            <TableHead className="hidden md:table-cell">
-                              Creation Date
-                            </TableHead> */}
-                            <TableHead>Actions</TableHead>
+                              </Link>
+                            </TableCell>
                           </TableRow>
-                        </TableHeader>
-                        <TableBody>
-                          {filteredTests.map((test) => (
-                            <TableRow key={test._id}>
-                              <TableCell className="font-medium">
-                                {test.testName}
-                              </TableCell>
-                              {/* <TableCell className="hidden  md:table-cell">
-                                {test.createdBy}
-                              </TableCell>
-                              <TableCell className="hidden md:table-cell">
-                                {test.creationDate}
-                              </TableCell> */}
-                              <TableCell>
-                                {/* <Button variant="ghost" size="sm">
-                                  Edit
-                                </Button>
-                                <Button variant="ghost" size="sm">
-                                  Delete
-                                </Button> */}
-
-                                <Link href={`/attempt-test/${test._id}`}>
-                                  <Button
-                                    variant="ghost"
-                                    size="sm"
-                                    className="hidden md:inline-flex"
-                                  >
-                                    View
-                                  </Button>
-                                </Link>
-                              </TableCell>
-                            </TableRow>
-                          ))}
-                        </TableBody>
-                      </Table>
-                    </div>
-                  </CardContent>
-                </Card>
-              </TabsContent>
-            </Tabs>
-          </div>
+                        ))}
+                      </TableBody>
+                    </Table>
+                  </div>
+                </CardContent>
+              </Card>
+            </TabsContent>
+          </Tabs>
         </main>
       </div>
     </div>
