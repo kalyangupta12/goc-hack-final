@@ -2,7 +2,6 @@
 
 import Starbg from "@/assets/stars.png"
 import Gridbg from "@/assets/grid-lines.png"
-import { Button } from "@/components/button"
 import {
   motion,
   useMotionTemplate,
