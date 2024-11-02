@@ -2,8 +2,12 @@
 import { useUser } from "@clerk/nextjs"
 import React, { useState } from "react"
 import * as XLSX from "xlsx"
+
 //import { ToastContainer, toast } from "react-toastify"
-import { Toaster } from "react-hot-toast"
+
+
+import toast, {Toaster} from 'react-hot-toast'
+
 import { TestShareCard } from "@/sections/TestShareCard"
 import toast from "react-hot-toast"
 import "react-toastify/dist/ReactToastify.css"
@@ -114,6 +118,10 @@ const CreateTestPage = () => {
       <Toaster position="top-center" reverseOrder={false} />
 
       <div className="flex items-center justify-between mb-8">
+      <Toaster
+      position="top-center"
+      reverseOrder={false}
+    />
         <Link href="/admin">
           <Button
             variant="ghost"
@@ -308,7 +316,7 @@ const CreateTestPage = () => {
           </Droppable>
         </DragDropContext>
       </div>
-      {/* <ToastContainer theme="dark" /> */}
+
     </div>
   )
 }

@@ -2,16 +2,20 @@
 
 import starsBg from "@/assets/stars.png"
 
-import React, { useState } from "react"
-import { useRouter } from "next/navigation"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { toast } from "react-toastify"
-import { useUser } from "@clerk/nextjs"
-const TestCodeEntry = () => {
-  const [code, setCode] = useState("")
-  const [loading, setLoading] = useState(false)
-  const router = useRouter()
+
+
+
+import React, { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import toast, {Toaster} from 'react-hot-toast'
+import { useUser } from '@clerk/nextjs'
+  const TestCodeEntry = () => {
+  const [code, setCode] = useState('');
+  const [loading, setLoading] = useState(false);
+  const router = useRouter();
+
   const handleSubmit = async (e) => {
     e.preventDefault()
     setLoading(true)
@@ -34,16 +38,20 @@ const TestCodeEntry = () => {
   }
 
   return (
-    <div
-      className="min-h-screen bg-black flex items-center justify-center p-4 text-black bg-gradient-to-br from-purple-950 via-gray-900 to-black "
-      style={{
-        backgroundImage: `url(${starsBg.src})`,
-      }}
-    >
-      <div className=" max-w-3xl w-full h-[300px] bg-zinc-200 rounded-lg shadow-md p-16 bg-gradient-to-br from-purple-950 via-gray-900 to-black ">
-        <h1 className="text-4xl font-bold bg-gradient-to-r from-purple-200 to-purple-400 bg-clip-text text-transparent text-center mb-6">
-          Enter Test Code
-        </h1>
+
+   
+
+
+    <div className="min-h-screen bg-black flex items-center justify-center p-4 text-black"  style={{
+      backgroundImage: `url(${starsBg.src})`,
+    }}>
+      <Toaster
+      position="top-center"
+      reverseOrder={false}
+    />
+      <div className="max-w-md w-full bg-zinc-200 rounded-lg shadow-md p-8">
+        <h1 className="text-2xl font-bold text-center mb-6">Enter Test Code</h1>
+        
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
