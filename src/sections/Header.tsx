@@ -1,6 +1,9 @@
 import MenuIcon from "@/assets/icon-menu.svg"
-import { Button } from "@/components/button"
-import { GlazeButton } from "@/components/glaze-button"
+import {
+  AttendButton,
+  CreateButton,
+  GetStartedButton,
+} from "@/components/button"
 import Logo from "@/assets/logo-w.png"
 import { auth } from "@clerk/nextjs/server"
 import Link from "next/link"
@@ -9,7 +12,7 @@ import { redirect } from "next/navigation"
 
 export const Header = async () => {
   const { userId } = await auth()
-  
+
   // Redirect to sign-in if trying to access protected routes without auth
   const handleProtectedRoute = (path: string) => {
     if (!userId) {
@@ -29,33 +32,31 @@ export const Header = async () => {
               <img src={Logo.src} alt="Logo" />
             </div>
           </div>
-          
-          <div className="gap-4 items-center hidden md:block">
-            <Link href="/">Home</Link>
-          </div>
 
           {userId ? (
-            <>
-              <div className="items-center">
-                <Link href={handleProtectedRoute("/attempt-test/testcode")}>
-                  <Button text="Attend Test" />
-                </Link>
-              </div>
-              
-              <div className="flex gap-4 items-center">
+            <div className="flex gap-x-4">
+              <div className=" items-center hidden md:block">
                 <Link href={handleProtectedRoute("/upload-handler-3")}>
-                  <Button text="Create Test" />
+                  <AttendButton />
                 </Link>
               </div>
-              
-              <div>
+              <div className="items-center hidden md:block">
+                <Link href={handleProtectedRoute("/attempt-test/testcode")}>
+                  <CreateButton />
+                </Link>
+              </div>
+
+              <div className="flex ">
                 <UserButton afterSignOutUrl="/" />
               </div>
-            </>
+              <div className="block md:hidden">
+                <MenuIcon />
+              </div>
+            </div>
           ) : (
             <div>
               <Link href="/sign-up">
-                <Button text="Get Started" />
+                <GetStartedButton />
               </Link>
             </div>
           )}

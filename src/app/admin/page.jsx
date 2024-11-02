@@ -104,7 +104,7 @@ export default function Dashboard() {
       >
         <div className="flex items-center justify-between p-4 border-b border-gray-700">
           <h1 className="text-lg font-semibold text-purple-400">
-            Admin Dashboard
+            {`${user?.firstName}`} Dashboard
           </h1>
           <Button
             variant="ghost"
@@ -156,7 +156,17 @@ export default function Dashboard() {
                 Dashboard
               </h2>
             </div>
-            <UserButton />
+            <div className="flex gap-x-6 ">
+              <Button
+                onClick={() => {
+                  router.push("/")
+                }}
+                className="mx-2 py-2 bg-purple-600 text-white hover:bg-purple-700 rounded-md"
+              >
+                Home
+              </Button>
+              <UserButton />
+            </div>
           </div>
         </header>
         {/* Main content with tabs */}
