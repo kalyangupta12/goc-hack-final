@@ -36,12 +36,12 @@ export const Header = async () => {
           {userId ? (
             <div className="flex gap-x-4">
               <div className=" items-center hidden md:block">
-                <Link href={handleProtectedRoute("/upload-handler-3")}>
+                <Link href={handleProtectedRoute("/attempt-test/testcode")}>
                   <AttendButton />
                 </Link>
               </div>
               <div className="items-center hidden md:block">
-                <Link href={handleProtectedRoute("/attempt-test/testcode")}>
+                <Link href={handleProtectedRoute("/upload-handler-3")}>
                   <CreateButton />
                 </Link>
               </div>
