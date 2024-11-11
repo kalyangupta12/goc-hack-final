@@ -1,4 +1,3 @@
-// Updated code by  GPT
 const xlsx = require('xlsx');
 const multer = require('multer');
 const path = require('path');
