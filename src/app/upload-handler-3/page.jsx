@@ -1,8 +1,8 @@
 "use client"
-import { useUser } from "@clerk/nextjs"
-import React, { useState } from "react"
+import { useUser, useAuth, RedirectToSignIn } from "@clerk/nextjs"
+import React, { useEffect, useState } from "react"
 import * as XLSX from "xlsx"
-import toast, {Toaster} from 'react-hot-toast'
+import toast, { Toaster } from "react-hot-toast"
 import { TestShareCard } from "@/sections/TestShareCard"
 import "react-toastify/dist/ReactToastify.css"
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd"
@@ -13,11 +13,13 @@ import Link from "next/link"
 import { AlignLeftIcon } from "@radix-ui/react-icons"
 import { IconArrowLeftToArc } from "@tabler/icons-react"
 import { ToastNotification } from "@/components/toastnotifivation"
+
 const CreateTestPage = () => {
   const [testLink, setTestLink] = useState("")
   const [testCode, setTestCode] = useState("")
   const { user } = useUser()
 
+  const { isSignedIn } = useAuth()
   const { register, control, handleSubmit, watch, setValue } = useForm({
     defaultValues: {
       testName: "",
@@ -42,6 +44,15 @@ const CreateTestPage = () => {
     control,
     name: "questions",
   })
+  const [isLoading, setIsLoading] = useState(true)
+
+  useEffect(() => {
+    setIsLoading(false)
+  }, [])
+
+  if (isLoading) return <div>Loading...</div>
+  if (!isSignedIn) return <RedirectToSignIn />
+
 
   const onFileChange = (e) => {
     const file = e.target.files[0]
@@ -110,10 +121,7 @@ const CreateTestPage = () => {
   return (
     <div className="min-h-screen w-full bg-gradient-to-br from-purple-950 via-gray-900 to-black p-10 font-poppins">
       <div className="flex items-center justify-between mb-8">
-      <Toaster
-      position="top-center"
-      reverseOrder={false}
-    />
+        <Toaster position="top-center" reverseOrder={false} />
         <Link href="/admin">
           <Button
             variant="ghost"
@@ -308,7 +316,6 @@ const CreateTestPage = () => {
           </Droppable>
         </DragDropContext>
       </div>
-
     </div>
   )
 }
